@@ -1,0 +1,42 @@
+.countdown {
+    -fx-background-color: black;
+    -fx-padding: 0 0 5em;
+}
+
+.countdown .counter,
+.countdown .counter-stroke,
+.countdown .newyear {
+    -fx-text-alignment: center;
+    -fx-fill: white;
+}
+
+.countdown .counter,
+.countdown .counter-stroke {
+    -fx-font-size: 20em;
+}
+
+.countdown .counter-stroke {
+    -fx-fill: transparent;
+    -fx-stroke: white;
+    -fx-stroke-width: 2em;
+    visibility: hidden;
+}
+
+.countdown.is-finale .counter,
+.countdown.is-finale .counter-stroke {
+    -fx-font-size: 40em;
+    visibility: visible;
+}
+
+.countdown .newyear {
+    -fx-font-size: 10em;
+    visibility: hidden;
+}
+
+.countdown.is-newyear .counter {
+    visibility: hidden;
+}
+
+.countdown.is-newyear .newyear {
+    visibility: visible;
+}

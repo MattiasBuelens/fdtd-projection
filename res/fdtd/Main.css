@@ -1,0 +1,9 @@
+@font-face {
+    font-family: Farray;
+    src: url('Farray.otf');
+}
+
+#root {
+    -fx-font-size: 2px; /* overridden by controller to be 1vmax */
+    -fx-font-family: Farray;
+}

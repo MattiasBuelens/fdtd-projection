@@ -1,0 +1,7 @@
+.priceList {
+    -fx-padding: 1em;
+}
+
+.priceList .countdownText {
+    -fx-font-size: 3em;
+}
