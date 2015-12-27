@@ -3,10 +3,10 @@
 <?import javafx.scene.layout.*?>
 <AnchorPane fx:id="slideshowRoot" styleClass="slideshow" stylesheets="@res/Main.css" xmlns="http://javafx.com/javafx/8"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="fdtd.SlideshowController">
-    <Region fx:id="image1"
+    <Region fx:id="imageBack"
             AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
             AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
-    <Region fx:id="image2"
+    <Region fx:id="imageFront"
             AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
             AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
 </AnchorPane>
