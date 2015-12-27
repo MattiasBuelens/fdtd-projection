@@ -7,5 +7,4 @@
             fx:controller="fdtd.SlideshowController">
     <ImageView fx:id="image1" preserveRatio="true"/>
     <ImageView fx:id="image2" preserveRatio="true"/>
-    <fx:include fx:id="countdownBar" source="CountdownBar.fxml" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0"/>
 </AnchorPane>

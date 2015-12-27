@@ -1,4 +1,5 @@
 .countdown-bar {
+    -fx-padding: 1em;
     -fx-font-size: 3em;
     -fx-text-alignment: right;
     /* outside stroke is broken, use drop shadow instead */

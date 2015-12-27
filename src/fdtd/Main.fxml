@@ -10,4 +10,5 @@
     <fx:include fx:id="countdown" source="Countdown.fxml"
                 AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+    <fx:include fx:id="countdownBar" source="CountdownBar.fxml" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0"/>
 </AnchorPane>

@@ -38,6 +38,12 @@ public class MainController {
     @FXML
     private SlideshowController priceListController;
 
+    @FXML
+    private Parent countdownBar;
+
+    @FXML
+    private CountdownBarController countdownBarController;
+
     private final CountdownModel countdownModel = new CountdownModel(Main.NEW_YEAR);
 
     private final ObservableList<ScreenController> screens = new ObservableListWrapper<>(new ArrayList<>());
@@ -80,6 +86,11 @@ public class MainController {
             screen.yearProperty().bind(yearProperty());
             screen.timeUntilNewYearProperty().bind(timeUntilNewYearProperty());
         }
+
+        // Initialize countdown bar
+        countdownBarController.visibleProperty().bind(countdownController.visibleProperty().not());
+        countdownBarController.yearProperty().bind(yearProperty());
+        countdownBarController.timeUntilNewYearProperty().bind(timeUntilNewYearProperty());
 
         // Update countdown every second
         final Timeline timeline = new Timeline(
