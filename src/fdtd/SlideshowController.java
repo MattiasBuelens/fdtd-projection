@@ -4,19 +4,20 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableObjectValue;
 import javafx.fxml.FXML;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
+import javafx.scene.Parent;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 
 public class SlideshowController extends ScreenController {
 
     @FXML
-    private Pane slideshowRoot;
+    private Parent slideshowRoot;
 
     @FXML
-    private ImageView image1;
+    private Region image1;
 
     @FXML
-    private ImageView image2;
+    private Region image2;
 
     private final ReadOnlyObjectWrapper<ScreenVisibility> screenVisibility = new ReadOnlyObjectWrapper<>();
 
@@ -26,10 +27,13 @@ public class SlideshowController extends ScreenController {
     }
 
     public void initialize() {
-        image1.fitWidthProperty().bind(slideshowRoot.widthProperty());
-        image1.fitHeightProperty().bind(slideshowRoot.heightProperty());
-        image2.fitWidthProperty().bind(slideshowRoot.widthProperty());
-        image2.fitHeightProperty().bind(slideshowRoot.heightProperty());
+    }
+
+    private static BackgroundSize SIZE_STRETCH = new BackgroundSize(1d, 1d, true, true, false, false);
+    private static BackgroundSize SIZE_FIT = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false);
+
+    private Background createBackground(Image image) {
+        return new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, SIZE_STRETCH));
     }
 
     @Override

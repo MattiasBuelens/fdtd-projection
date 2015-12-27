@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<AnchorPane fx:id="slideshowRoot" styleClass="slideshow" stylesheets="@res/Main.css"
-            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="fdtd.SlideshowController">
-    <ImageView fx:id="image1" preserveRatio="true"/>
-    <ImageView fx:id="image2" preserveRatio="true"/>
+<?import javafx.scene.layout.*?>
+<AnchorPane fx:id="slideshowRoot" styleClass="slideshow" stylesheets="@res/Main.css" xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="fdtd.SlideshowController">
+    <Region fx:id="image1"
+            AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+    <Region fx:id="image2"
+            AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
 </AnchorPane>
