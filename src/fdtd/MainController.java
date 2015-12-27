@@ -27,7 +27,13 @@ public class MainController {
     private Parent root;
 
     @FXML
+    private Parent countdown;
+
+    @FXML
     private CountdownController countdownController;
+
+    @FXML
+    private Parent priceList;
 
     @FXML
     private SlideshowController priceListController;

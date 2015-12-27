@@ -3,7 +3,7 @@
 }
 
 .countdown .countdown-texts {
-    -fx-padding: 0 0 5em;
+    -fx-padding: 0 0 5em 0;
 }
 
 .countdown .counter,
