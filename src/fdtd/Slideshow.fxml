@@ -2,7 +2,7 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane fx:id="slideshowRoot" styleClass="slideshow" stylesheets="@res/Slideshow.css"
+<AnchorPane fx:id="slideshowRoot" styleClass="slideshow" stylesheets="@res/Main.css"
             xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="fdtd.SlideshowController">
     <ImageView fx:id="image1" preserveRatio="true"/>

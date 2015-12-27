@@ -1,9 +1,91 @@
+/* region Global */
+
 @font-face {
     font-family: Farray;
     src: url('Farray.otf');
 }
 
-#root {
+#root,
+.countdown-bar,
+.countdown,
+.slideshow {
     -fx-font-size: 10px; /* overridden by controller to be 1vmax */
     -fx-font-family: Farray;
 }
+
+/* endregion */
+
+/* region Countdown bar */
+
+.countdown-bar {
+    -fx-padding: 1em;
+    -fx-font-size: 3em;
+    -fx-text-alignment: right;
+    /* outside stroke is broken, use drop shadow instead */
+    -fx-effect: dropshadow(two-pass-box, black, 0.5em, 1.0, 0, 0);
+}
+
+.countdown-bar .countdown-text {
+    -fx-fill: white;
+}
+
+/* endregion */
+
+/* region Countdown screen */
+
+.countdown {
+    -fx-background-color: black;
+}
+
+.countdown .countdown-texts {
+    -fx-padding: 0 0 5em 0;
+}
+
+.countdown .counter,
+.countdown .counter-stroke,
+.countdown .newyear {
+    -fx-text-alignment: center;
+    -fx-fill: white;
+}
+
+.countdown .counter,
+.countdown .counter-stroke {
+    -fx-font-size: 20em;
+}
+
+.countdown .counter-stroke {
+    -fx-fill: transparent;
+    -fx-stroke: white;
+    -fx-stroke-width: 2em;
+    visibility: hidden;
+}
+
+.countdown.is-finale .counter,
+.countdown.is-finale .counter-stroke {
+    -fx-font-size: 40em;
+    visibility: visible;
+}
+
+.countdown .newyear {
+    -fx-font-size: 10em;
+    visibility: hidden;
+}
+
+.countdown.is-newyear .counter {
+    visibility: hidden;
+}
+
+.countdown.is-newyear .newyear {
+    visibility: visible;
+}
+
+/* endregion */
+
+/* region Slideshow screen */
+
+.slideshow {
+    -fx-background-color: black;
+    -fx-padding: 1em;
+}
+
+/* endregion */
