@@ -1,0 +1,10 @@
+.countdown-bar {
+    -fx-font-size: 3em;
+    -fx-text-alignment: right;
+    /* outside stroke is broken, use drop shadow instead */
+    -fx-effect: dropshadow(two-pass-box, black, 0.5em, 1.0, 0, 0);
+}
+
+.countdown-bar .countdown-text {
+    -fx-fill: white;
+}
