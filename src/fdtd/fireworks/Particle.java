@@ -61,7 +61,7 @@ public class Particle {
     double lastPosY;
 
     public Particle(double posX, double posY, double velX, double velY, double targetX, double targetY,
-            Paint color, int size, boolean usePhysics, boolean shouldExplodeChildren, boolean hasTail) {
+                    Paint color, int size, boolean usePhysics, boolean shouldExplodeChildren, boolean hasTail) {
         this.posX = posX;
         this.posY = posY;
         this.velX = velX;

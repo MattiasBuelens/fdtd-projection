@@ -34,6 +34,7 @@ package fdtd.fireworks;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -156,12 +157,12 @@ public class FireworksPane extends Pane {
             double particleAngle = i * angle;
             newParticles.add(
                     new Particle(
-                    firework.posX, firework.posY,
-                    Math.cos(particleAngle) * randomVelocity, Math.sin(particleAngle) * randomVelocity,
-                    0, 0,
-                    colors[color],
-                    8,
-                    true, shouldExplodeChildren, true));
+                            firework.posX, firework.posY,
+                            Math.cos(particleAngle) * randomVelocity, Math.sin(particleAngle) * randomVelocity,
+                            0, 0,
+                            colors[color],
+                            8,
+                            true, shouldExplodeChildren, true));
         }
     }
 
@@ -172,12 +173,12 @@ public class FireworksPane extends Pane {
             double particleAngle = count * angle;
             newParticles.add(
                     new Particle(
-                    firework.posX, firework.posY,
-                    Math.cos(particleAngle) * randomVelocity, Math.sin(particleAngle) * randomVelocity,
-                    0, 0,
-                    firework.color,
-                    4,
-                    true, false, false));
+                            firework.posX, firework.posY,
+                            Math.cos(particleAngle) * randomVelocity, Math.sin(particleAngle) * randomVelocity,
+                            0, 0,
+                            firework.color,
+                            4,
+                            true, false, false));
         }
     }
 }
