@@ -6,18 +6,18 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.*?>
 
-<BorderPane fx:id="priceListRoot" styleClass="priceList" stylesheets="@PriceList.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fdtd.PriceListController">
+<BorderPane fx:id="priceListRoot" styleClass="price-list" stylesheets="@PriceList.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fdtd.PriceListController">
     <top>
-        <TextFlow styleClass="countdownText" textAlignment="RIGHT">
+        <TextFlow styleClass="countdown-texts">
            <children>
-               <Text fx:id="countdownCelebrating" text="Celebrating " />
-               <Text fx:id="countdownYear" text="2016" />
-               <Text fx:id="countdownDirection" text=" in " />
+               <Text fx:id="countdownCelebrating" styleClass="countdown-text" text="Celebrating " />
+               <Text fx:id="countdownYear" styleClass="countdown-text" text="2016" />
+               <Text fx:id="countdownDirection" styleClass="countdown-text" text=" in " />
                <StackPane>
                   <children>
                       <!-- invisible dummy to reserve maximum space -->
                       <Text text="88:88:88" visible="false" />
-                      <Text fx:id="countdownTime" text="88:88:88" />
+                      <Text fx:id="countdownTime" styleClass="countdown-text" text="88:88:88" />
                   </children>
                </StackPane>
            </children>

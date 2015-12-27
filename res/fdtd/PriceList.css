@@ -1,7 +1,15 @@
-.priceList {
+.price-list {
+    -fx-background-color: black;
     -fx-padding: 1em;
 }
 
-.priceList .countdownText {
+.price-list .countdown-texts {
     -fx-font-size: 3em;
+    -fx-text-alignment: right;
+    /* outside stroke is broken, use drop shadow instead */
+    -fx-effect: dropshadow(two-pass-box, black, 0.5em, 1.0, 0, 0);
+}
+
+.price-list .countdown-text {
+    -fx-fill: white;
 }
