@@ -6,7 +6,8 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableObjectValue;
 import javafx.beans.value.ObservableStringValue;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 import java.util.Locale;
@@ -14,7 +15,7 @@ import java.util.Locale;
 public class SlideshowController extends ScreenController {
 
     @FXML
-    private Parent slideshowRoot;
+    private Pane slideshowRoot;
 
     @FXML
     private Text countdownCelebrating;
@@ -27,6 +28,12 @@ public class SlideshowController extends ScreenController {
 
     @FXML
     private Text countdownTime;
+
+    @FXML
+    private ImageView image1;
+
+    @FXML
+    private ImageView image2;
 
     private final ReadOnlyObjectWrapper<ScreenVisibility> screenVisibility = new ReadOnlyObjectWrapper<>();
 
@@ -43,6 +50,11 @@ public class SlideshowController extends ScreenController {
     }
 
     public void initialize() {
+        image1.fitWidthProperty().bind(slideshowRoot.widthProperty());
+        image1.fitHeightProperty().bind(slideshowRoot.heightProperty());
+        image2.fitWidthProperty().bind(slideshowRoot.widthProperty());
+        image2.fitHeightProperty().bind(slideshowRoot.heightProperty());
+
         countdownCelebrating.visibleProperty().bind(isNewYearProperty());
         countdownYear.textProperty().bind(countdownYearString);
         countdownDirection.textProperty().bind(countdownDirectionString);

@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.*?>
-<BorderPane fx:id="slideshowRoot" styleClass="slideshow" stylesheets="res/Slideshow.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fdtd.SlideshowController">
-    <top>
-        <TextFlow styleClass="countdown-texts">
-           <children>
-               <Text fx:id="countdownCelebrating" styleClass="countdown-text" text="Celebrating " />
-               <Text fx:id="countdownYear" styleClass="countdown-text" text="2016" />
-               <Text fx:id="countdownDirection" styleClass="countdown-text" text=" in " />
-               <StackPane>
-                  <children>
-                      <!-- invisible dummy to reserve maximum space -->
-                      <Text text="88:88:88" visible="false" />
-                      <Text fx:id="countdownTime" styleClass="countdown-text" text="88:88:88" />
-                  </children>
-               </StackPane>
-           </children>
-        </TextFlow>
-    </top>
-    <center>
-    </center>
-</BorderPane>
+<AnchorPane fx:id="slideshowRoot" styleClass="slideshow" stylesheets="res/Slideshow.css"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="fdtd.SlideshowController">
+    <ImageView fx:id="image1" preserveRatio="true"/>
+    <ImageView fx:id="image2" preserveRatio="true"/>
+    <TextFlow styleClass="countdown-texts" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0">
+        <Text fx:id="countdownCelebrating" styleClass="countdown-text" text="Celebrating "/>
+        <Text fx:id="countdownYear" styleClass="countdown-text" text="2016"/>
+        <Text fx:id="countdownDirection" styleClass="countdown-text" text=" in "/>
+        <StackPane>
+            <!-- invisible dummy to reserve maximum space -->
+            <Text text="88:88:88" visible="false"/>
+            <Text fx:id="countdownTime" styleClass="countdown-text" text="88:88:88"/>
+        </StackPane>
+    </TextFlow>
+</AnchorPane>
