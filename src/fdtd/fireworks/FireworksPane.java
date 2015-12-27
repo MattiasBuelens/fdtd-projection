@@ -29,7 +29,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package ensemble.samples.graphics2d.canvas;
+package fdtd.fireworks;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -47,7 +47,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 
-public class SanFranciscoFireworks extends Pane {
+public class FireworksPane extends Pane {
     public static final int IMAGE_WIDTH = 1024;
     public static final int IMAGE_HEIGHT = 708;
 
@@ -58,7 +58,7 @@ public class SanFranciscoFireworks extends Pane {
     private final Paint[] colors;
     private int countDownTillNextFirework = 40;
 
-    public SanFranciscoFireworks() {
+    public FireworksPane() {
         // create a color palette of 180 colors
         colors = new Paint[181];
         colors[0] = new RadialGradient(0, 0, 0.5, 0.5, 0.5, true, CycleMethod.NO_CYCLE,
