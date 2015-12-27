@@ -1,13 +1,16 @@
 package fdtd;
 
-import com.sun.javafx.collections.ObservableListWrapper;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.*;
+import javafx.beans.value.ObservableDoubleValue;
+import javafx.beans.value.ObservableIntegerValue;
+import javafx.beans.value.ObservableObjectValue;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -46,7 +49,7 @@ public class MainController {
 
     private final CountdownModel countdownModel = new CountdownModel(Main.NEW_YEAR);
 
-    private final ObservableList<ScreenController> screens = new ObservableListWrapper<>(new ArrayList<>());
+    private final ObservableList<ScreenController> screens = FXCollections.observableList(new ArrayList<>());
     private final ObjectProperty<ScreenController> visibleScreen = new SimpleObjectProperty<>();
 
     private final ViewportUnits viewportUnits = new ViewportUnits();
@@ -127,18 +130,21 @@ public class MainController {
             }
         }
 
+        if (candidateScreens.isEmpty()) {
+            // nothing to show
+            visibleScreen.set(null);
+            return;
+        }
+
         int index = candidateScreens.indexOf(visibleScreen.get());
         if (index >= 0) {
             // next screen
             index = (index + 1) % candidateScreens.size();
-            visibleScreen.set(candidateScreens.get(index));
         } else if (!candidateScreens.isEmpty()) {
             // first screen
-            visibleScreen.set(candidateScreens.get(0));
-        } else {
-            // nothing to show
-            visibleScreen.set(null);
+            index = 0;
         }
+        visibleScreen.set(candidateScreens.get(index));
     }
 
     private void onScreenVisibilityChange(ObservableValue<? extends ScreenVisibility> observable, ScreenVisibility oldValue, ScreenVisibility newValue) {
