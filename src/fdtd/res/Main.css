@@ -9,8 +9,11 @@
 .countdown-bar,
 .countdown,
 .slideshow {
-    -fx-font-size: 10px; /* overridden by controller to be 1vmax */
     -fx-font-family: Farray;
+}
+
+#root {
+    -fx-font-size: 10px; /* overridden by controller to be 1vmax */
 }
 
 /* endregion */
