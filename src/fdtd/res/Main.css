@@ -4,6 +4,6 @@
 }
 
 #root {
-    -fx-font-size: 2px; /* overridden by controller to be 1vmax */
+    -fx-font-size: 10px; /* overridden by controller to be 1vmax */
     -fx-font-family: Farray;
 }
