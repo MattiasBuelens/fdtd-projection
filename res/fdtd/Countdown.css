@@ -1,5 +1,8 @@
 .countdown {
     -fx-background-color: black;
+}
+
+.countdown .countdown-texts {
     -fx-padding: 0 0 5em;
 }
 

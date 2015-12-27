@@ -2,11 +2,15 @@
 
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Text?>
+<?import fdtd.fireworks.FireworksPane?>
 <StackPane fx:id="countdownRoot" styleClass="countdown" stylesheets="@Countdown.css" xmlns="http://javafx.com/javafx/8"
            xmlns:fx="http://javafx.com/fxml/1" fx:controller="fdtd.CountdownController">
     <children>
-        <Text fx:id="counterFill" styleClass="counter" text="99"/>
-        <Text fx:id="counterStroke" styleClass="counter-stroke" text="99"/>
-        <Text fx:id="newYearText" styleClass="newyear" text="Happy newyear!"/>
+        <FireworksPane fx:id="fireworks" />
+        <StackPane styleClass="countdown-texts">
+            <Text fx:id="counterFill" styleClass="counter" text="99"/>
+            <Text fx:id="counterStroke" styleClass="counter-stroke" text="99"/>
+            <Text fx:id="newYearText" styleClass="newyear" text="Happy newyear!"/>
+        </StackPane>
     </children>
 </StackPane>

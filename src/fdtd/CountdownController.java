@@ -1,5 +1,6 @@
 package fdtd;
 
+import fdtd.fireworks.FireworksPane;
 import javafx.animation.*;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -36,6 +37,9 @@ public class CountdownController extends ScreenController {
     @FXML
     private Text newYearText;
 
+    @FXML
+    private FireworksPane fireworks;
+
     private final ObservableObjectValue<ScreenVisibility> screenVisibility;
 
     private final ObservableStringValue countdownString;
@@ -66,6 +70,9 @@ public class CountdownController extends ScreenController {
         bindStyleClass(CSS_CLASS_NEWYEAR, isNewYearProperty());
 
         finaleAnimation = createFinaleAnimation();
+
+        isNewYearProperty().addListener((observable, oldValue, newValue) -> playFireworks());
+        visibleProperty().addListener((observable, oldValue, newValue) -> playFireworks());
     }
 
     @Override
@@ -102,6 +109,14 @@ public class CountdownController extends ScreenController {
     private void playFinaleAnimation() {
         if (isFinale.get()) {
             finaleAnimation.playFromStart();
+        }
+    }
+
+    private void playFireworks() {
+        if (isNewYear() && isVisible()) {
+            fireworks.play();
+        } else {
+            fireworks.stop();
         }
     }
 
