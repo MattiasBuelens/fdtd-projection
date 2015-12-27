@@ -11,10 +11,10 @@ import javafx.scene.text.Text;
 
 import java.util.Locale;
 
-public class PriceListController extends ScreenController {
+public class SlideshowController extends ScreenController {
 
     @FXML
-    private Parent priceListRoot;
+    private Parent slideshowRoot;
 
     @FXML
     private Text countdownCelebrating;
@@ -34,7 +34,7 @@ public class PriceListController extends ScreenController {
     private final ObservableStringValue countdownDirectionString;
     private final ObservableStringValue countdownTimeString;
 
-    public PriceListController() {
+    public SlideshowController() {
         screenVisibility.set(ScreenVisibility.CAN_SHOW);
 
         countdownYearString = Bindings.format(Locale.US, "%d", yearProperty());
@@ -64,7 +64,7 @@ public class PriceListController extends ScreenController {
 
     @Override
     public BooleanProperty visibleProperty() {
-        return priceListRoot.visibleProperty();
+        return slideshowRoot.visibleProperty();
     }
 
 }
