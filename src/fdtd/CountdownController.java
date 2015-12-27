@@ -18,7 +18,7 @@ public class CountdownController extends ScreenController {
 
     private static final int TIME_START = 60; // in seconds before new year
     private static final int TIME_START_FINALE = 10; // in seconds before new year
-    private static final int TIME_END = 5; // in seconds after new year
+    private static final int TIME_END = 60; // in seconds after new year
 
     private static final String CSS_CLASS_FINALE = "is-finale";
     private static final String CSS_CLASS_NEWYEAR = "is-newyear";
