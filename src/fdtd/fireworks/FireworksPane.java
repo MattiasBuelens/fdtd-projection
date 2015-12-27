@@ -48,12 +48,8 @@ import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 
 public class FireworksPane extends Pane {
-    public static final int IMAGE_WIDTH = 1024;
-    public static final int IMAGE_HEIGHT = 708;
-
     private final AnimationTimer timer;
     private final Canvas canvas;
-    private final ImageView background;
     private final List<Particle> particles = new ArrayList<>();
     private final Paint[] colors;
     private int countDownTillNextFirework = 40;
@@ -74,12 +70,11 @@ public class FireworksPane extends Pane {
                     new Stop(1, Color.hsb(h, 1, 1, 0)));
         }
         // create canvas
-        canvas = new Canvas(IMAGE_WIDTH, IMAGE_HEIGHT);
+        canvas = new Canvas();
 
         canvas.setBlendMode(BlendMode.ADD);
         canvas.setEffect(new Reflection(0, 0.4, 0.15, 0));
-        background = new ImageView(getClass().getResource("/ensemble/samples/shared-resources/sf.jpg").toExternalForm());
-        getChildren().addAll(background, canvas);
+        getChildren().add(canvas);
         // create animation timer that will be called every frame
         // final AnimationTimer timer = new AnimationTimer() {
         timer = new AnimationTimer() {
@@ -114,19 +109,9 @@ public class FireworksPane extends Pane {
      */
     @Override
     protected void layoutChildren() {
-        final double w = getWidth();
-        final double h = getHeight();
-        final double scale = Math.min(w / IMAGE_WIDTH, h / IMAGE_HEIGHT);
-        final int width = (int) (IMAGE_WIDTH * scale);
-        final int height = (int) (IMAGE_HEIGHT * scale);
-        final int x = (int) ((w - width) / 2);
-        final int y = (int) ((h - height) / 2);
-        background.relocate(x, y);
-        background.setFitWidth(width);
-        background.setFitHeight(height);
-        canvas.relocate(x, y);
-        canvas.setWidth(width);
-        canvas.setHeight(height * 0.706);
+        canvas.relocate(0, 0);
+        canvas.setWidth(getWidth());
+        canvas.setHeight(getHeight());
     }
 
     private void drawFireworks(GraphicsContext gc) {
