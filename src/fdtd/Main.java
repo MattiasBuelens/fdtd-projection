@@ -11,10 +11,10 @@ public class Main extends Application {
     public static final int NEW_YEAR = 2016;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
-        primaryStage.setTitle("From Dusk Till Dawn");
-        primaryStage.setScene(new Scene(root, 300, 275));
+    public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("ControlPanel.fxml"));
+        primaryStage.setTitle("From Dusk Till Dawn - Controlepaneel");
+        primaryStage.setScene(new Scene(root, 400, 200));
         //primaryStage.setFullScreen(true);
         primaryStage.show();
     }
