@@ -24,8 +24,7 @@
     -fx-padding: 1em;
     -fx-font-size: 3em;
     -fx-text-alignment: right;
-    /* outside stroke is broken, use drop shadow instead */
-    -fx-effect: dropshadow(two-pass-box, black, 0.5em, 1.0, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 0.4em, 0.0, 0.4em, 0.4em);
 }
 
 .countdown-bar .countdown-text {
