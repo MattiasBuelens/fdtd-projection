@@ -69,7 +69,6 @@ public class SlideshowController extends ScreenController {
 
     public void start() {
         if (getSlides().isEmpty()) {
-            animation.jumpTo(Duration.INDEFINITE);
             animation.stop();
         } else {
             animation.play();
