@@ -16,19 +16,22 @@
                 <RowConstraints />
                 <RowConstraints />
                 <RowConstraints />
+                <RowConstraints />
+            <RowConstraints />
             </rowConstraints>
             <children>
                 <Label text="Configuratie" />
                 <ComboBox fx:id="comboSlideshowPreset" maxWidth="9999" GridPane.columnIndex="1" />
                 <Label text="Monitor" GridPane.rowIndex="1" />
                 <ComboBox fx:id="comboMonitor" maxWidth="9999" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <CheckBox fx:id="checkFullScreen" text="Volledig scherm" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             </children>
         </GridPane>
     </center>
     <bottom>
         <HBox alignment="CENTER_RIGHT" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
-            <Button fx:id="buttonStart" text="Start" onAction="#start" />
-            <Button fx:id="buttonStop" text="Stop" onAction="#stop" />
+            <Button fx:id="buttonStart" onAction="#start" text="Start" />
+            <Button fx:id="buttonStop" onAction="#stop" text="Stop" />
         </HBox>
     </bottom>
     <padding>

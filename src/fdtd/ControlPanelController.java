@@ -5,6 +5,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.stage.Screen;
@@ -31,6 +33,9 @@ public class ControlPanelController {
     private ComboBox<Screen> comboMonitor;
 
     @FXML
+    private CheckBox checkFullScreen;
+
+    @FXML
     private Button buttonStart;
 
     @FXML
@@ -40,6 +45,7 @@ public class ControlPanelController {
     private MainController projectionController;
 
     private final BooleanProperty projectionRunning = new SimpleBooleanProperty(false);
+    private final BooleanProperty projectionFullscreen = new SimpleBooleanProperty(true);
 
     private final ObjectProperty<SlideshowPreset> slideshowPreset = new SimpleObjectProperty<>();
 
@@ -63,13 +69,16 @@ public class ControlPanelController {
             setScreen(Screen.getPrimary());
         }
 
-        projectionRunning.addListener((observable, oldValue, newValue) -> {
+        runningProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != newValue) {
                 if (newValue) {
                     createProjection();
-                    updateScreen(projectionStage, getScreen());
+                    updateScreen();
+                    updateFullScreen();
+                    projectionStage.fullScreenProperty().addListener(this::onStageFullScreenChanged);
                     projectionStage.show();
                 } else {
+                    projectionStage.fullScreenProperty().removeListener(this::onStageFullScreenChanged);
                     projectionStage.close();
                 }
             }
@@ -77,9 +86,14 @@ public class ControlPanelController {
 
         screenProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != newValue) {
-                if (projectionStage != null) {
-                    updateScreen(projectionStage, newValue);
-                }
+                updateScreen();
+                updateFullScreen();
+            }
+        });
+
+        fullScreenProperty().addListener((observable1, oldValue, newValue) -> {
+            if (oldValue != newValue) {
+                updateFullScreen();
             }
         });
 
@@ -100,6 +114,8 @@ public class ControlPanelController {
         comboMonitor.setCellFactory(param -> new ScreenListCell());
         comboMonitor.itemsProperty().set(screens);
         comboMonitor.valueProperty().bindBidirectional(screenProperty());
+
+        checkFullScreen.selectedProperty().bindBidirectional(fullScreenProperty());
 
         buttonStart.disableProperty().bind(runningProperty());
         buttonStop.disableProperty().bind(runningProperty().not());
@@ -137,6 +153,18 @@ public class ControlPanelController {
         return projectionRunning;
     }
 
+    public boolean isFullScreen() {
+        return fullScreenProperty().get();
+    }
+
+    public void setFullScreen(boolean fullScreen) {
+        fullScreenProperty().set(fullScreen);
+    }
+
+    public BooleanProperty fullScreenProperty() {
+        return projectionFullscreen;
+    }
+
     public void start() {
         projectionRunning.set(true);
     }
@@ -157,21 +185,29 @@ public class ControlPanelController {
         projectionStage = new Stage();
         projectionStage.setTitle("From Dusk Till Dawn - Projectie");
         projectionStage.setScene(new Scene(root, 400, 300));
+        projectionStage.setFullScreenExitHint("");
 
         projectionController = fxmlLoader.getController();
     }
 
-    private static void updateScreen(Stage stage, Screen screen) {
-        if (screen == null) {
-            // windowed
-            stage.setFullScreen(false);
-        } else {
-            // full screen
+    private void updateScreen() {
+        Screen screen = getScreen();
+        if (screen != null && projectionStage != null) {
+            // center in screen
             Rectangle2D bounds = screen.getVisualBounds();
-            stage.setX(bounds.getMinX());
-            stage.setY(bounds.getMinY());
-            stage.setFullScreen(true);
+            projectionStage.setX(bounds.getMinX() + (bounds.getWidth() - projectionStage.getWidth()) / 2d);
+            projectionStage.setY(bounds.getMinY() + (bounds.getHeight() - projectionStage.getHeight()) / 2d);
         }
+    }
+
+    private void updateFullScreen() {
+        if (projectionStage != null && isFullScreen() != projectionStage.isFullScreen()) {
+            projectionStage.setFullScreen(isFullScreen());
+        }
+    }
+
+    private void onStageFullScreenChanged(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+        setFullScreen(newValue);
     }
 
     private static String getScreenName(Screen screen, int index) {
