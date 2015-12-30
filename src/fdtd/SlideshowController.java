@@ -1,10 +1,8 @@
 package fdtd;
 
 import javafx.animation.*;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.*;
 import javafx.beans.value.ObservableObjectValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class SlideshowController extends ScreenController {
@@ -30,8 +29,9 @@ public class SlideshowController extends ScreenController {
 
     private final ReadOnlyObjectWrapper<ScreenVisibility> screenVisibility = new ReadOnlyObjectWrapper<>();
 
-    private final ObservableList<Image> slides = FXCollections.observableList(new ArrayList<>());
+    private final ListProperty<Image> slides = new SimpleListProperty<>(FXCollections.observableList(new ArrayList<>()));
     private final ReadOnlyObjectWrapper<Image> currentSlide = new ReadOnlyObjectWrapper<>();
+
     private final ObjectProperty<Duration> transitionDuration = new SimpleObjectProperty<>(Duration.millis(500));
     private final ObjectProperty<Duration> slideDuration = new SimpleObjectProperty<>(Duration.seconds(5));
 
@@ -55,10 +55,20 @@ public class SlideshowController extends ScreenController {
                 }
             }
         });
+
+        slidesProperty().emptyProperty().addListener((observable, oldValue, newValue) -> {
+            if (oldValue != newValue && isVisible()) {
+                start();
+            }
+        });
+
+        if (isVisible()) {
+            start();
+        }
     }
 
     public void start() {
-        if (slides.isEmpty()) {
+        if (getSlides().isEmpty()) {
             animation.jumpTo(Duration.INDEFINITE);
             animation.stop();
         } else {
@@ -97,6 +107,7 @@ public class SlideshowController extends ScreenController {
     }
 
     private void onTransitionStart() {
+        List<Image> slides = getSlides();
         if (slides.isEmpty()) {
             // nothing to show
             return;
@@ -146,6 +157,14 @@ public class SlideshowController extends ScreenController {
     }
 
     public ObservableList<Image> getSlides() {
+        return slidesProperty().get();
+    }
+
+    public void setSlides(ObservableList<Image> slides) {
+        slidesProperty().set(slides);
+    }
+
+    public ListProperty<Image> slidesProperty() {
         return slides;
     }
 

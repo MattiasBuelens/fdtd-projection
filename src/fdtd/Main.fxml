@@ -4,7 +4,7 @@
 <AnchorPane fx:id="root" stylesheets="@res/Main.css" xmlns="http://javafx.com/javafx/8"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="fdtd.MainController">
-    <fx:include fx:id="priceList" source="Slideshow.fxml"
+    <fx:include fx:id="slideshow" source="Slideshow.fxml"
                 AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
     <fx:include fx:id="countdown" source="Countdown.fxml"

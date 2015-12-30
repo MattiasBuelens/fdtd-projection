@@ -3,9 +3,7 @@ package fdtd;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ReadOnlyDoubleWrapper;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import javafx.beans.value.ObservableDoubleValue;
 import javafx.beans.value.ObservableIntegerValue;
 import javafx.beans.value.ObservableObjectValue;
@@ -15,6 +13,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.image.Image;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -36,10 +35,10 @@ public class MainController {
     private CountdownController countdownController;
 
     @FXML
-    private Parent priceList;
+    private Parent slideshow;
 
     @FXML
-    private SlideshowController priceListController;
+    private SlideshowController slideshowController;
 
     @FXML
     private Parent countdownBar;
@@ -48,9 +47,12 @@ public class MainController {
     private CountdownBarController countdownBarController;
 
     private final CountdownModel countdownModel = new CountdownModel(Main.NEW_YEAR);
+    private final Timeline countdownClock;
 
-    private final ObservableList<ScreenController> screens = FXCollections.observableList(new ArrayList<>());
+    private final ObservableList<ScreenController> screens = FXCollections.observableArrayList();
     private final ObjectProperty<ScreenController> visibleScreen = new SimpleObjectProperty<>();
+
+    private final ListProperty<Image> slides = new SimpleListProperty<>(FXCollections.observableArrayList());
 
     private final ViewportUnits viewportUnits = new ViewportUnits();
     private final ReadOnlyDoubleWrapper rem = new ReadOnlyDoubleWrapper(16d);
@@ -70,6 +72,12 @@ public class MainController {
             }
         });
 
+        // Update countdown every second
+        countdownClock = new Timeline(
+                new KeyFrame(javafx.util.Duration.seconds(1), (event -> updateModel()))
+        );
+        countdownClock.setCycleCount(Animation.INDEFINITE);
+
         // Make 1 rem = 1 vmax
         rem.bind(viewportUnits.vmax);
     }
@@ -82,7 +90,7 @@ public class MainController {
         root.styleProperty().bind(rem.asString(Locale.US, "-fx-font-size: %.2f px"));
 
         // Initialize screens
-        screens.add(priceListController);
+        screens.add(slideshowController);
         screens.add(countdownController);
         for (ScreenController screen : screens) {
             screen.setVisible(false);
@@ -95,12 +103,11 @@ public class MainController {
         countdownBarController.yearProperty().bind(yearProperty());
         countdownBarController.timeUntilNewYearProperty().bind(timeUntilNewYearProperty());
 
-        // Update countdown every second
-        final Timeline timeline = new Timeline(
-                new KeyFrame(javafx.util.Duration.seconds(1), (event -> updateModel()))
-        );
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
+        // Initialize slideshow
+        slideshowController.slidesProperty().bind(slidesProperty());
+
+        // Start ticking
+        countdownClock.play();
 
         // Initial update
         updateModel();
@@ -162,6 +169,16 @@ public class MainController {
         }
     }
 
+    public void dispose() {
+        // Stop ticking
+        countdownClock.stop();
+
+        // Hide screens
+        for (ScreenController screen : screens) {
+            screen.setVisible(false);
+        }
+    }
+
     // endregion
 
     // region Properties
@@ -171,8 +188,7 @@ public class MainController {
         return rem.get();
     }
 
-    @FXML
-    private final ObservableDoubleValue remProperty() {
+    public final ObservableDoubleValue remProperty() {
         return rem.getReadOnlyProperty();
     }
 
@@ -180,8 +196,7 @@ public class MainController {
         return timeUntilNewYearProperty().get();
     }
 
-    @FXML
-    private final ObservableObjectValue<Duration> timeUntilNewYearProperty() {
+    public final ObservableObjectValue<Duration> timeUntilNewYearProperty() {
         return countdownModel.differenceProperty();
     }
 
@@ -189,9 +204,20 @@ public class MainController {
         return yearProperty().get();
     }
 
-    @FXML
-    private final ObservableIntegerValue yearProperty() {
+    public final ObservableIntegerValue yearProperty() {
         return countdownModel.yearProperty();
+    }
+
+    public final ObservableList<Image> getSlides() {
+        return slidesProperty().get();
+    }
+
+    public final void setSlides(ObservableList<Image> slides) {
+        slidesProperty().set(slides);
+    }
+
+    public final ListProperty<Image> slidesProperty() {
+        return slides;
     }
 
     // endregion

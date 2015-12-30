@@ -1,5 +1,7 @@
 package fdtd;
 
+import fdtd.util.MappedList;
+import fdtd.util.Memoizer;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -16,10 +18,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
+import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class ControlPanelController {
 
@@ -73,13 +77,8 @@ public class ControlPanelController {
             if (oldValue != newValue) {
                 if (newValue) {
                     createProjection();
-                    updateScreen();
-                    updateFullScreen();
-                    projectionStage.fullScreenProperty().addListener(this::onStageFullScreenChanged);
-                    projectionStage.show();
                 } else {
-                    projectionStage.fullScreenProperty().removeListener(this::onStageFullScreenChanged);
-                    projectionStage.close();
+                    destroyProjection();
                 }
             }
         });
@@ -99,7 +98,7 @@ public class ControlPanelController {
 
         slideshowPresetProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != newValue) {
-                // TODO slideshow preset
+                updateSlides();
             }
         });
     }
@@ -186,8 +185,28 @@ public class ControlPanelController {
         projectionStage.setTitle("From Dusk Till Dawn - Projectie");
         projectionStage.setScene(new Scene(root, 400, 300));
         projectionStage.setFullScreenExitHint("");
+        projectionStage.fullScreenProperty().addListener(this::onStageFullScreenChanged);
 
         projectionController = fxmlLoader.getController();
+
+        updateScreen();
+        updateFullScreen();
+        updateSlides();
+
+        projectionStage.show();
+    }
+
+    private void destroyProjection() {
+        if (projectionController != null) {
+            projectionController.dispose();
+            projectionController = null;
+        }
+
+        if (projectionStage != null) {
+            projectionStage.fullScreenProperty().removeListener(this::onStageFullScreenChanged);
+            projectionStage.close();
+            projectionStage = null;
+        }
     }
 
     private void updateScreen() {
@@ -208,6 +227,20 @@ public class ControlPanelController {
 
     private void onStageFullScreenChanged(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
         setFullScreen(newValue);
+    }
+
+    private void updateSlides() {
+        if (projectionController != null) {
+            projectionController.setSlides(getPresetSlides(getSlideshowPreset()));
+        }
+    }
+
+    private static ObservableList<Image> getPresetSlides(SlideshowPreset preset) {
+        return new MappedList<>(preset.getImageURLs(), Memoizer.memoize(ControlPanelController::createImage));
+    }
+
+    private static Image createImage(URL imageURL) {
+        return new Image(imageURL.toExternalForm(), true);
     }
 
     private static String getScreenName(Screen screen, int index) {
