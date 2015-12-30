@@ -21,9 +21,9 @@
             </rowConstraints>
             <children>
                 <Label text="Configuratie" />
-                <ComboBox fx:id="comboSlideshowPreset" maxWidth="9999" GridPane.columnIndex="1" />
+                <ChoiceBox fx:id="choiceSlideshowPreset" maxWidth="9999" GridPane.columnIndex="1" />
                 <Label text="Monitor" GridPane.rowIndex="1" />
-                <ComboBox fx:id="comboMonitor" maxWidth="9999" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <ChoiceBox fx:id="choiceMonitor" maxWidth="9999" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <CheckBox fx:id="checkFullScreen" text="Volledig scherm" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             </children>
         </GridPane>

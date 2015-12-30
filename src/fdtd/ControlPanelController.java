@@ -16,11 +16,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,10 +31,10 @@ public class ControlPanelController {
     private Parent root;
 
     @FXML
-    private ComboBox<SlideshowPreset> comboSlideshowPreset;
+    private ChoiceBox<SlideshowPreset> choiceSlideshowPreset;
 
     @FXML
-    private ComboBox<Screen> comboMonitor;
+    private ChoiceBox<Screen> choiceMonitor;
 
     @FXML
     private CheckBox checkFullScreen;
@@ -104,15 +104,13 @@ public class ControlPanelController {
     }
 
     public void initialize() {
-        comboSlideshowPreset.setButtonCell(new SlideshowPresetListCell());
-        comboSlideshowPreset.setCellFactory(param -> new SlideshowPresetListCell());
-        comboSlideshowPreset.getItems().addAll(SlideshowPreset.values());
-        comboSlideshowPreset.valueProperty().bindBidirectional(slideshowPresetProperty());
+        choiceSlideshowPreset.setConverter(new SlideshowPresetConverter());
+        choiceSlideshowPreset.getItems().addAll(SlideshowPreset.values());
+        choiceSlideshowPreset.valueProperty().bindBidirectional(slideshowPresetProperty());
 
-        comboMonitor.setButtonCell(new ScreenListCell());
-        comboMonitor.setCellFactory(param -> new ScreenListCell());
-        comboMonitor.itemsProperty().set(screens);
-        comboMonitor.valueProperty().bindBidirectional(screenProperty());
+        choiceMonitor.setConverter(new ScreenConverter());
+        choiceMonitor.itemsProperty().set(screens);
+        choiceMonitor.valueProperty().bindBidirectional(screenProperty());
 
         checkFullScreen.selectedProperty().bindBidirectional(fullScreenProperty());
 
@@ -253,31 +251,32 @@ public class ControlPanelController {
         }
     }
 
-    private static class SlideshowPresetListCell extends ListCell<SlideshowPreset> {
-        @Override
-        protected void updateItem(SlideshowPreset item, boolean empty) {
-            super.updateItem(item, empty);
+    private class SlideshowPresetConverter extends StringConverter<SlideshowPreset> {
 
-            if (empty || item == null) {
-                textProperty().unbind();
-                textProperty().set(null);
-            } else {
-                textProperty().bind(item.titleProperty());
-            }
+        @Override
+        public String toString(SlideshowPreset preset) {
+            return preset.getTitle();
         }
+
+        @Override
+        public SlideshowPreset fromString(String title) {
+            return SlideshowPreset.byTitle(title);
+        }
+
     }
 
-    private static class ScreenListCell extends ListCell<Screen> {
-        @Override
-        protected void updateItem(Screen item, boolean empty) {
-            super.updateItem(item, empty);
+    private class ScreenConverter extends StringConverter<Screen> {
 
-            if (empty || item == null) {
-                setText(null);
-            } else {
-                setText(getScreenName(item, getIndex()));
-            }
+        @Override
+        public String toString(Screen screen) {
+            return getScreenName(screen, screens.indexOf(screen));
         }
+
+        @Override
+        public Screen fromString(String string) {
+            return null;
+        }
+
     }
 
 }
