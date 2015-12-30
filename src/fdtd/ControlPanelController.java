@@ -186,12 +186,11 @@ public class ControlPanelController {
         projectionStage.fullScreenProperty().addListener(this::onStageFullScreenChanged);
 
         projectionController = fxmlLoader.getController();
-
-        updateScreen();
-        updateFullScreen();
         updateSlides();
 
         projectionStage.show();
+        updateScreen();
+        updateFullScreen();
     }
 
     private void destroyProjection() {
