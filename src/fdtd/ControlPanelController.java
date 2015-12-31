@@ -217,6 +217,7 @@ public class ControlPanelController {
         projectionStage.setScene(new Scene(root, 400, 300));
         projectionStage.setFullScreenExitHint("");
         projectionStage.fullScreenProperty().addListener(this::onStageFullScreenChanged);
+        projectionStage.setOnCloseRequest(event -> destroyProjection());
 
         projectionController = fxmlLoader.getController();
         projectionController.slideDurationProperty().bind(slideDurationProperty());
@@ -238,6 +239,8 @@ public class ControlPanelController {
             projectionStage.close();
             projectionStage = null;
         }
+
+        projectionRunning.set(false);
     }
 
     private void updateScreen() {
