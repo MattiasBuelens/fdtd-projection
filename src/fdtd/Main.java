@@ -1,6 +1,7 @@
 package fdtd;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,6 +17,9 @@ public class Main extends Application {
         primaryStage.setTitle("From Dusk Till Dawn - Controlepaneel");
         primaryStage.setScene(new Scene(root, 400, 200));
         //primaryStage.setFullScreen(true);
+        primaryStage.setOnCloseRequest(event -> {
+            Platform.exit();
+        });
         primaryStage.show();
     }
 
