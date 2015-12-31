@@ -62,6 +62,12 @@ public class SlideshowController extends ScreenController {
             }
         });
 
+        slideDurationProperty().addListener(((observable, oldValue, newValue) -> {
+            if (oldValue != newValue && animation.getStatus() == Animation.Status.RUNNING) {
+                restart();
+            }
+        }));
+
         if (isVisible()) {
             start();
         }
@@ -77,6 +83,11 @@ public class SlideshowController extends ScreenController {
 
     public void stop() {
         animation.pause();
+    }
+
+    public void restart() {
+        animation.stop();
+        start();
     }
 
     private Animation createAnimation() {
