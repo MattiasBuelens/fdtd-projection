@@ -2,6 +2,7 @@ package fdtd;
 
 import fdtd.util.MappedList;
 import fdtd.util.Memoizer;
+import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -14,12 +15,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
@@ -40,6 +40,12 @@ public class ControlPanelController {
     private CheckBox checkFullScreen;
 
     @FXML
+    private Slider sliderSlideDuration;
+
+    @FXML
+    private Label labelSlideDuration;
+
+    @FXML
     private Button buttonStart;
 
     @FXML
@@ -52,6 +58,7 @@ public class ControlPanelController {
     private final BooleanProperty projectionFullscreen = new SimpleBooleanProperty(true);
 
     private final ObjectProperty<SlideshowPreset> slideshowPreset = new SimpleObjectProperty<>();
+    private final ObjectProperty<Duration> slideDuration = new SimpleObjectProperty<>();
 
     private final ObservableList<Screen> screens = Screen.getScreens();
     private final ObjectProperty<Screen> projectionScreen = new SimpleObjectProperty<>();
@@ -59,6 +66,9 @@ public class ControlPanelController {
     public ControlPanelController() {
         // Default to first slideshow preset
         setSlideshowPreset(SlideshowPreset.values()[0]);
+
+        // Default slide duration
+        setSlideDuration(Duration.seconds(5));
 
         if (screens.size() > 1) {
             // Default to first non-primary screen
@@ -114,6 +124,17 @@ public class ControlPanelController {
 
         checkFullScreen.selectedProperty().bindBidirectional(fullScreenProperty());
 
+        sliderSlideDuration.setValue(getSlideDuration().toSeconds());
+        labelSlideDuration.textProperty().bind(
+                Bindings.format("%.0f seconden", sliderSlideDuration.valueProperty())
+        );
+        slideDurationProperty().bind(
+                Bindings.createObjectBinding(
+                        () -> Duration.seconds(sliderSlideDuration.getValue()),
+                        sliderSlideDuration.valueProperty()
+                )
+        );
+
         buttonStart.disableProperty().bind(runningProperty());
         buttonStop.disableProperty().bind(runningProperty().not());
     }
@@ -128,6 +149,18 @@ public class ControlPanelController {
 
     public ObjectProperty<SlideshowPreset> slideshowPresetProperty() {
         return slideshowPreset;
+    }
+
+    public Duration getSlideDuration() {
+        return slideDurationProperty().get();
+    }
+
+    public void setSlideDuration(Duration slideDuration) {
+        slideDurationProperty().set(slideDuration);
+    }
+
+    public ObjectProperty<Duration> slideDurationProperty() {
+        return slideDuration;
     }
 
     public Screen getScreen() {
@@ -186,6 +219,7 @@ public class ControlPanelController {
         projectionStage.fullScreenProperty().addListener(this::onStageFullScreenChanged);
 
         projectionController = fxmlLoader.getController();
+        projectionController.slideDurationProperty().bind(slideDurationProperty());
         updateSlides();
 
         projectionStage.show();

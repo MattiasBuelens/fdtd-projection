@@ -53,6 +53,7 @@ public class MainController {
     private final ObjectProperty<ScreenController> visibleScreen = new SimpleObjectProperty<>();
 
     private final ListProperty<Image> slides = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private final ObjectProperty<javafx.util.Duration> slideDuration = new SimpleObjectProperty<>(javafx.util.Duration.seconds(5));
 
     private final ViewportUnits viewportUnits = new ViewportUnits();
     private final ReadOnlyDoubleWrapper rem = new ReadOnlyDoubleWrapper(16d);
@@ -105,6 +106,7 @@ public class MainController {
 
         // Initialize slideshow
         slideshowController.slidesProperty().bind(slidesProperty());
+        slideshowController.slideDurationProperty().bind(slideDurationProperty());
 
         // Start ticking
         countdownClock.play();
@@ -218,6 +220,18 @@ public class MainController {
 
     public final ListProperty<Image> slidesProperty() {
         return slides;
+    }
+
+    public javafx.util.Duration getSlideDuration() {
+        return slideDurationProperty().get();
+    }
+
+    public void setSlideDuration(javafx.util.Duration slideDuration) {
+        slideDurationProperty().set(slideDuration);
+    }
+
+    public ObjectProperty<javafx.util.Duration> slideDurationProperty() {
+        return slideDuration;
     }
 
     // endregion

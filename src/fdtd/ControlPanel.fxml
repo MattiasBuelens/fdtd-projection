@@ -19,6 +19,7 @@
                 <RowConstraints />
                 <RowConstraints />
                 <RowConstraints />
+                <RowConstraints />
             </rowConstraints>
             <children>
                 <Label text="Configuratie" />
@@ -26,6 +27,9 @@
                 <Label text="Monitor" GridPane.rowIndex="1" />
                 <ChoiceBox fx:id="choiceMonitor" maxWidth="9999" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                 <CheckBox fx:id="checkFullScreen" text="Volledig scherm" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                <Label text="Tijd per slide" GridPane.rowIndex="4" />
+                <Slider fx:id="sliderSlideDuration" max="60.0" min="1.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <Label fx:id="labelSlideDuration" text="5 seconden" GridPane.columnIndex="2" GridPane.rowIndex="4" />
             </children>
         </GridPane>
     </center>
