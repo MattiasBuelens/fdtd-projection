@@ -1,10 +1,10 @@
 package fdtd;
 
 import javafx.animation.*;
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableObjectValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -13,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -30,6 +31,7 @@ public class SlideshowController extends ScreenController {
     private final ReadOnlyObjectWrapper<ScreenVisibility> screenVisibility = new ReadOnlyObjectWrapper<>();
 
     private final ListProperty<Image> slides = new SimpleListProperty<>(FXCollections.observableList(new ArrayList<>()));
+    private final List<Image> cycleSlides = new ArrayList<>();
     private final ReadOnlyObjectWrapper<Image> currentSlide = new ReadOnlyObjectWrapper<>();
 
     private final ObjectProperty<Duration> transitionDuration = new SimpleObjectProperty<>(Duration.millis(500));
@@ -53,6 +55,30 @@ public class SlideshowController extends ScreenController {
                 } else {
                     stop();
                 }
+            }
+        });
+
+        slidesProperty().addListener((observable, oldValue, newValue) -> {
+            // reset cycle
+            cycleSlides.clear();
+            cycleSlides.addAll(newValue);
+            Collections.shuffle(cycleSlides);
+        });
+        slidesProperty().addListener((ListChangeListener<Image>) change -> {
+            // add new slides to cycle rotation
+            boolean hasAdded = false;
+            while (change.next()) {
+                if (change.wasRemoved()) {
+                    cycleSlides.removeAll(change.getRemoved());
+                }
+                if (change.wasAdded()) {
+                    hasAdded = true;
+                    cycleSlides.addAll(change.getAddedSubList());
+                }
+            }
+            // re-shuffle
+            if (hasAdded) {
+                Collections.shuffle(cycleSlides);
             }
         });
 
@@ -117,23 +143,30 @@ public class SlideshowController extends ScreenController {
     }
 
     private void onTransitionStart() {
-        List<Image> slides = getSlides();
-        if (slides.isEmpty()) {
-            // nothing to show
-            return;
+        // remove previous from cycle
+        Image previousSlide = getCurrentSlide();
+        cycleSlides.remove(previousSlide);
+
+        if (cycleSlides.isEmpty()) {
+            // next cycle
+            cycleSlides.addAll(getSlides());
+            Collections.shuffle(cycleSlides);
         }
 
-        int index = slides.indexOf(getCurrentSlide());
-        if (index >= 0) {
-            // next slide
-            index = (index + 1) % slides.size();
-        } else if (!slides.isEmpty()) {
-            // random slide
-            index = random.nextInt(slides.size());
+        Image nextSlide;
+        if (cycleSlides.isEmpty()) {
+            // nothing else to show
+            nextSlide = previousSlide;
+        } else {
+            // select next
+            nextSlide = cycleSlides.get(0);
+            // try to not show the same slide twice
+            if (nextSlide.equals(previousSlide) && cycleSlides.size() > 1) {
+                nextSlide = cycleSlides.get(1);
+            }
         }
 
         // update current slide
-        Image nextSlide = slides.get(index);
         currentSlide.set(nextSlide);
 
         // prepare slide in background
