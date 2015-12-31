@@ -16,7 +16,6 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("ControlPanel.fxml"));
         primaryStage.setTitle("From Dusk Till Dawn - Controlepaneel");
         primaryStage.setScene(new Scene(root, 400, 200));
-        //primaryStage.setFullScreen(true);
         primaryStage.setOnCloseRequest(event -> {
             Platform.exit();
         });
