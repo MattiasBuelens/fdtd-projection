@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.*?>
-<AnchorPane fx:id="slideshowRoot" styleClass="slideshow" stylesheets="@res/Main.css" xmlns="http://javafx.com/javafx/8"
+<AnchorPane fx:id="slideshowRoot" styleClass="slideshow" stylesheets="@style/Main.css" xmlns="http://javafx.com/javafx/8"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="fdtd.SlideshowController">
     <Region fx:id="imageBack"
             AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"

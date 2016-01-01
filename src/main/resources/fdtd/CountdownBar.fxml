@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.HBox?>
-<HBox fx:id="barRoot" styleClass="countdown-bar" stylesheets="@res/Main.css"
+<HBox fx:id="barRoot" styleClass="countdown-bar" stylesheets="@style/Main.css"
           xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="fdtd.CountdownBarController">
     <TextFlow>
