@@ -66,7 +66,9 @@ public class SlideshowModel {
             nextSlide = cycleSlides.get(0);
             // try to not show the same slide twice
             if (nextSlide.equals(previousSlide) && cycleSlides.size() > 1) {
-                nextSlide = cycleSlides.get(1);
+                int index = 1 + random.nextInt(cycleSlides.size() - 1);
+                Collections.swap(cycleSlides, 0, index);
+                nextSlide = cycleSlides.get(0);
             }
         }
 
