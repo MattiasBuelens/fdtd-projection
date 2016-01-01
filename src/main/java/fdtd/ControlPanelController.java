@@ -24,7 +24,9 @@ import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 
 public class ControlPanelController {
@@ -120,7 +122,12 @@ public class ControlPanelController {
         });
 
         // Default new year
-        newYear.set(CountdownModel.getNewYearDate(Main.NEW_YEAR));
+        LocalDate today = LocalDate.now();
+        int year = today.getYear();
+        if (today.getMonth() != Month.JANUARY) {
+            year += 1;
+        }
+        newYear.set(CountdownModel.getNewYearDate(year));
     }
 
     public void initialize() {
