@@ -10,9 +10,9 @@ import java.net.URL;
 
 public enum SlideshowPreset {
 
-    BAR("Bar", "res/Bar1.jpg", "res/Bar2.jpg", "res/Bar3.jpg"),
-    BONNEKES("Bonnekes", "res/Bonnekes1.jpg", "res/Bonnekes2.jpg", "res/Bonnekes3.jpg"),
-    CHAMPAGNE_COCKTAILS("Champagne en Cocktails", "res/Champagne1.jpg", "res/Champagne2.jpg", "res/Champagne3.jpg", "res/Cocktails1.jpg", "res/Cocktails2.jpg", "res/Cocktails3.jpg");
+    BAR("Bar", "images/Bar1.jpg", "images/Bar2.jpg", "images/Bar3.jpg"),
+    BONNEKES("Bonnekes", "images/Bonnekes1.jpg", "images/Bonnekes2.jpg", "images/Bonnekes3.jpg"),
+    CHAMPAGNE_COCKTAILS("Champagne en Cocktails", "images/Champagne1.jpg", "images/Champagne2.jpg", "images/Champagne3.jpg", "images/Cocktails1.jpg", "images/Cocktails2.jpg", "images/Cocktails3.jpg");
 
     private final ReadOnlyStringWrapper title = new ReadOnlyStringWrapper();
     private final ReadOnlyListWrapper<URL> imageURLs = new ReadOnlyListWrapper<>(FXCollections.observableArrayList());
