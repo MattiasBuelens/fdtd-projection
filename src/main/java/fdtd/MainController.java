@@ -199,7 +199,7 @@ public class MainController {
     }
 
     public final ObservableObjectValue<Duration> timeUntilNewYearProperty() {
-        return countdownModel.differenceProperty();
+        return countdownModel.timeUntilNewYearProperty();
     }
 
     public final LocalDateTime getNewYear() {

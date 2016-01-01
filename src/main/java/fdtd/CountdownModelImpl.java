@@ -1,17 +1,12 @@
 package fdtd;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.IntegerBinding;
-import javafx.beans.binding.ObjectBinding;
+import javafx.beans.binding.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableIntegerValue;
 import javafx.beans.value.ObservableObjectValue;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 public class CountdownModelImpl implements CountdownModel {
 
@@ -21,9 +16,17 @@ public class CountdownModelImpl implements CountdownModel {
     private final ObjectProperty<LocalDateTime> newYear = new SimpleObjectProperty<>(LocalDateTime.MIN);
     private final ObjectBinding<Duration> difference;
 
+    private final LongBinding secondsUntilNewYear;
+    private final LongBinding secondsSinceNewYear;
+    private final BooleanBinding isNewYear;
+
     public CountdownModelImpl() {
         year = Bindings.createIntegerBinding(() -> newYearProperty().get().getYear(), newYearProperty());
         difference = Bindings.createObjectBinding(() -> Duration.between(now.get(), newYearProperty().get()), now, newYearProperty());
+
+        secondsUntilNewYear = Bindings.createLongBinding(() -> timeUntilNewYearProperty().get().getSeconds(), timeUntilNewYearProperty());
+        secondsSinceNewYear = secondsUntilNewYear.negate();
+        isNewYear = secondsSinceNewYear.greaterThanOrEqualTo(0d);
     }
 
     public CountdownModelImpl(LocalDateTime newYear) {
@@ -36,7 +39,7 @@ public class CountdownModelImpl implements CountdownModel {
     }
 
     @Override
-    public final ObservableIntegerValue yearProperty() {
+    public final IntegerExpression yearProperty() {
         return year;
     }
 
@@ -51,8 +54,23 @@ public class CountdownModelImpl implements CountdownModel {
     }
 
     @Override
-    public final ObservableObjectValue<Duration> differenceProperty() {
+    public final ObservableObjectValue<Duration> timeUntilNewYearProperty() {
         return difference;
+    }
+
+    @Override
+    public LongExpression secondsUntilNewYearProperty() {
+        return secondsUntilNewYear;
+    }
+
+    @Override
+    public LongExpression secondsSinceNewYearProperty() {
+        return secondsSinceNewYear;
+    }
+
+    @Override
+    public BooleanExpression isNewYearProperty() {
+        return isNewYear;
     }
 
 }
