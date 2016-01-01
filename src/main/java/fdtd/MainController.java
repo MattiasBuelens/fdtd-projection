@@ -52,7 +52,7 @@ public class MainController {
     private final ObservableList<ScreenController> screens = FXCollections.observableArrayList();
     private final ObjectProperty<ScreenController> visibleScreen = new SimpleObjectProperty<>();
 
-    private final ListProperty<Image> slides = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private final SlideshowModel slideshowModel = new SlideshowModel();
     private final ObjectProperty<javafx.util.Duration> slideDuration = new SimpleObjectProperty<>(javafx.util.Duration.seconds(5));
 
     private final ViewportUnits viewportUnits = new ViewportUnits();
@@ -103,7 +103,7 @@ public class MainController {
         countdownBarController.setCountdownModel(countdownModel);
 
         // Initialize slideshow
-        slideshowController.slidesProperty().bind(slidesProperty());
+        slideshowController.setSlideshowModel(slideshowModel);
         slideshowController.slideDurationProperty().bind(slideDurationProperty());
 
         // Start ticking
@@ -229,7 +229,7 @@ public class MainController {
     }
 
     public final ListProperty<Image> slidesProperty() {
-        return slides;
+        return slideshowModel.slidesProperty();
     }
 
     public javafx.util.Duration getSlideDuration() {

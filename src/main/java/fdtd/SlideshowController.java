@@ -1,14 +1,17 @@
 package fdtd;
 
 import javafx.animation.*;
+import javafx.beans.binding.ListExpression;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableObjectValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
+import org.fxmisc.easybind.EasyBind;
 
 public class SlideshowController extends ScreenController {
 
@@ -23,8 +26,9 @@ public class SlideshowController extends ScreenController {
 
     private final ReadOnlyObjectWrapper<ScreenVisibility> screenVisibility = new ReadOnlyObjectWrapper<>();
 
-    private final SlideshowModel model = new SlideshowModel();
+    private final ObjectProperty<SlideshowModel> model = new SimpleObjectProperty<>();
 
+    private final ListProperty<Image> slides = new SimpleListProperty<>();
     private final ObjectProperty<Duration> transitionDuration = new SimpleObjectProperty<>(Duration.millis(500));
     private final ObjectProperty<Duration> slideDuration = new SimpleObjectProperty<>(Duration.seconds(5));
 
@@ -32,6 +36,11 @@ public class SlideshowController extends ScreenController {
 
     public SlideshowController() {
         screenVisibility.set(ScreenVisibility.CAN_SHOW);
+
+        slides.bind(EasyBind
+                .select(slideshowModelProperty())
+                .selectObject(SlideshowModel::slidesProperty)
+                .orElse(FXCollections.emptyObservableList()));
     }
 
     public void initialize() {
@@ -110,10 +119,10 @@ public class SlideshowController extends ScreenController {
 
     private void onTransitionStart() {
         // get next slide
-        model.nextSlide();
+        getSlideshowModel().nextSlide();
 
         // prepare slide in background
-        imageBack.setBackground(createBackground(model.getCurrentSlide()));
+        imageBack.setBackground(createBackground(getSlideshowModel().getCurrentSlide()));
     }
 
     private void onTransitionEnd() {
@@ -150,12 +159,8 @@ public class SlideshowController extends ScreenController {
         return slidesProperty().get();
     }
 
-    public final void setSlides(ObservableList<Image> slides) {
-        slidesProperty().set(slides);
-    }
-
-    public final ListProperty<Image> slidesProperty() {
-        return model.slidesProperty();
+    public final ListExpression<Image> slidesProperty() {
+        return slides;
     }
 
     public ObjectProperty<Duration> transitionDurationProperty() {
@@ -164,6 +169,18 @@ public class SlideshowController extends ScreenController {
 
     public ObjectProperty<Duration> slideDurationProperty() {
         return slideDuration;
+    }
+
+    public final SlideshowModel getSlideshowModel() {
+        return slideshowModelProperty().get();
+    }
+
+    public final void setSlideshowModel(SlideshowModel model) {
+        slideshowModelProperty().set(model);
+    }
+
+    public final ObjectProperty<SlideshowModel> slideshowModelProperty() {
+        return model;
     }
 
 }
