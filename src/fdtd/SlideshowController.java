@@ -3,19 +3,12 @@ package fdtd;
 import javafx.animation.*;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableObjectValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 
 public class SlideshowController extends ScreenController {
 
@@ -30,15 +23,12 @@ public class SlideshowController extends ScreenController {
 
     private final ReadOnlyObjectWrapper<ScreenVisibility> screenVisibility = new ReadOnlyObjectWrapper<>();
 
-    private final ListProperty<Image> slides = new SimpleListProperty<>(FXCollections.observableList(new ArrayList<>()));
-    private final List<Image> cycleSlides = new ArrayList<>();
-    private final ReadOnlyObjectWrapper<Image> currentSlide = new ReadOnlyObjectWrapper<>();
+    private final SlideshowModel model = new SlideshowModel();
 
     private final ObjectProperty<Duration> transitionDuration = new SimpleObjectProperty<>(Duration.millis(500));
     private final ObjectProperty<Duration> slideDuration = new SimpleObjectProperty<>(Duration.seconds(5));
 
     private Animation animation;
-    private final Random random = new Random();
 
     public SlideshowController() {
         screenVisibility.set(ScreenVisibility.CAN_SHOW);
@@ -55,30 +45,6 @@ public class SlideshowController extends ScreenController {
                 } else {
                     stop();
                 }
-            }
-        });
-
-        slidesProperty().addListener((observable, oldValue, newValue) -> {
-            // reset cycle
-            cycleSlides.clear();
-            cycleSlides.addAll(newValue);
-            Collections.shuffle(cycleSlides);
-        });
-        slidesProperty().addListener((ListChangeListener<Image>) change -> {
-            // add new slides to cycle rotation
-            boolean hasAdded = false;
-            while (change.next()) {
-                if (change.wasRemoved()) {
-                    cycleSlides.removeAll(change.getRemoved());
-                }
-                if (change.wasAdded()) {
-                    hasAdded = true;
-                    cycleSlides.addAll(change.getAddedSubList());
-                }
-            }
-            // re-shuffle
-            if (hasAdded) {
-                Collections.shuffle(cycleSlides);
             }
         });
 
@@ -143,34 +109,11 @@ public class SlideshowController extends ScreenController {
     }
 
     private void onTransitionStart() {
-        // remove previous from cycle
-        Image previousSlide = getCurrentSlide();
-        cycleSlides.remove(previousSlide);
-
-        if (cycleSlides.isEmpty()) {
-            // next cycle
-            cycleSlides.addAll(getSlides());
-            Collections.shuffle(cycleSlides);
-        }
-
-        Image nextSlide;
-        if (cycleSlides.isEmpty()) {
-            // nothing else to show
-            nextSlide = previousSlide;
-        } else {
-            // select next
-            nextSlide = cycleSlides.get(0);
-            // try to not show the same slide twice
-            if (nextSlide.equals(previousSlide) && cycleSlides.size() > 1) {
-                nextSlide = cycleSlides.get(1);
-            }
-        }
-
-        // update current slide
-        currentSlide.set(nextSlide);
+        // get next slide
+        model.nextSlide();
 
         // prepare slide in background
-        imageBack.setBackground(createBackground(nextSlide));
+        imageBack.setBackground(createBackground(model.getCurrentSlide()));
     }
 
     private void onTransitionEnd() {
@@ -186,6 +129,10 @@ public class SlideshowController extends ScreenController {
     private static BackgroundSize SIZE_FIT = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false);
 
     private Background createBackground(Image image) {
+        if (image == null) {
+            return null;
+        }
+
         return new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, SIZE_STRETCH));
     }
 
@@ -199,24 +146,16 @@ public class SlideshowController extends ScreenController {
         return slideshowRoot.visibleProperty();
     }
 
-    public ObservableList<Image> getSlides() {
+    public final ObservableList<Image> getSlides() {
         return slidesProperty().get();
     }
 
-    public void setSlides(ObservableList<Image> slides) {
+    public final void setSlides(ObservableList<Image> slides) {
         slidesProperty().set(slides);
     }
 
-    public ListProperty<Image> slidesProperty() {
-        return slides;
-    }
-
-    public Image getCurrentSlide() {
-        return currentSlideProperty().get();
-    }
-
-    public ObservableObjectValue<Image> currentSlideProperty() {
-        return currentSlide.getReadOnlyProperty();
+    public final ListProperty<Image> slidesProperty() {
+        return model.slidesProperty();
     }
 
     public ObjectProperty<Duration> transitionDurationProperty() {
