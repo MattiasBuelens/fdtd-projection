@@ -1,43 +1,64 @@
 package fdtd;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.binding.LongBinding;
-import javafx.beans.property.*;
+import javafx.beans.binding.Binding;
+import javafx.beans.binding.BooleanExpression;
+import javafx.beans.binding.IntegerExpression;
+import javafx.beans.binding.LongExpression;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableObjectValue;
+import javafx.beans.value.ObservableValue;
+import org.fxmisc.easybind.EasyBind;
 
 import java.time.Duration;
 
 /**
  * Abstract controller for a screen.
  * <p>
- * The {@link MainController} will bind the countdown time properties when initializing its screens,
+ * The {@link MainController} will bind the countdown model when initializing its screens,
  * allowing all screen controllers to observe the countdown state.
  */
 public abstract class ScreenController {
 
-    private final ObjectProperty<Duration> timeUntilNewYear = new SimpleObjectProperty<>(Duration.ZERO);
-    private final IntegerProperty year = new SimpleIntegerProperty(0);
+    private final ObjectProperty<CountdownModel> countdownModel = new SimpleObjectProperty<>();
 
-    private final LongBinding secondsUntilNewYear;
-    private final LongBinding secondsSinceNewYear;
-    private final BooleanBinding isNewYear;
+    private final IntegerExpression year;
+    private final Binding<Duration> timeUntilNewYear;
+    private final LongExpression secondsUntilNewYear;
+    private final LongExpression secondsSinceNewYear;
+    private final BooleanExpression isNewYear;
 
     protected ScreenController() {
-        secondsUntilNewYear = Bindings.createLongBinding(() -> timeUntilNewYear.get().getSeconds(), timeUntilNewYear);
-        secondsSinceNewYear = secondsUntilNewYear.negate();
-        isNewYear = secondsSinceNewYear.greaterThanOrEqualTo(0d);
-    }
-
-    public final ScreenVisibility getScreenVisibility() {
-        return screenVisibilityProperty().get();
+        year = IntegerExpression.integerExpression(EasyBind
+                .select(countdownModelProperty())
+                .selectObject(CountdownModel::yearProperty));
+        timeUntilNewYear = EasyBind
+                .select(countdownModelProperty())
+                .selectObject(CountdownModel::timeUntilNewYearProperty);
+        secondsUntilNewYear = LongExpression.longExpression(EasyBind
+                .select(countdownModelProperty())
+                .selectObject(CountdownModel::secondsUntilNewYearProperty));
+        secondsSinceNewYear = LongExpression.longExpression(EasyBind
+                .select(countdownModelProperty())
+                .selectObject(CountdownModel::secondsSinceNewYearProperty));
+        isNewYear = BooleanExpression.booleanExpression(EasyBind
+                .select(countdownModelProperty())
+                .selectObject(CountdownModel::isNewYearProperty));
     }
 
     /**
      * The screen's desired visibility.
      */
+    public final ScreenVisibility getScreenVisibility() {
+        return screenVisibilityProperty().get();
+    }
+
     public abstract ObservableObjectValue<ScreenVisibility> screenVisibilityProperty();
 
+    /**
+     * The screen's actual visibility.
+     */
     public final boolean isVisible() {
         return visibleProperty().get();
     }
@@ -46,40 +67,31 @@ public abstract class ScreenController {
         visibleProperty().set(visible);
     }
 
-    /**
-     * Property to show or hide this screen.
-     */
     public abstract BooleanProperty visibleProperty();
 
+    // region Countdown model properties
+
     public final Duration getTimeUntilNewYear() {
-        return timeUntilNewYear.get();
+        return timeUntilNewYear.getValue();
     }
 
-    public final ObjectProperty<Duration> timeUntilNewYearProperty() {
+    public final ObservableValue<Duration> timeUntilNewYearProperty() {
         return timeUntilNewYear;
-    }
-
-    public final void setTimeUntilNewYear(Duration timeUntilNewYear) {
-        this.timeUntilNewYear.set(timeUntilNewYear);
     }
 
     public final int getYear() {
         return yearProperty().get();
     }
 
-    public final IntegerProperty yearProperty() {
+    public final IntegerExpression yearProperty() {
         return year;
-    }
-
-    public final void setYear(int year) {
-        yearProperty().set(year);
     }
 
     public final long getSecondsUntilNewYear() {
         return secondsUntilNewYearProperty().get();
     }
 
-    public final LongBinding secondsUntilNewYearProperty() {
+    public final LongExpression secondsUntilNewYearProperty() {
         return secondsUntilNewYear;
     }
 
@@ -87,7 +99,7 @@ public abstract class ScreenController {
         return secondsSinceNewYearProperty().get();
     }
 
-    public final LongBinding secondsSinceNewYearProperty() {
+    public final LongExpression secondsSinceNewYearProperty() {
         return secondsSinceNewYear;
     }
 
@@ -95,8 +107,25 @@ public abstract class ScreenController {
         return isNewYearProperty().get();
     }
 
-    public final BooleanBinding isNewYearProperty() {
+    public final BooleanExpression isNewYearProperty() {
         return isNewYear;
+    }
+
+    // endregion
+
+    /**
+     * Countdown model.
+     */
+    public final CountdownModel getCountdownModel() {
+        return countdownModelProperty().get();
+    }
+
+    public final void setCountdownModel(CountdownModel countdownModel) {
+        countdownModelProperty().set(countdownModel);
+    }
+
+    public final ObjectProperty<CountdownModel> countdownModelProperty() {
+        return countdownModel;
     }
 
 }

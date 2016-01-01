@@ -95,14 +95,12 @@ public class MainController {
         screens.add(countdownController);
         for (ScreenController screen : screens) {
             screen.setVisible(false);
-            screen.yearProperty().bind(yearProperty());
-            screen.timeUntilNewYearProperty().bind(timeUntilNewYearProperty());
+            screen.setCountdownModel(countdownModel);
         }
 
         // Initialize countdown bar
         countdownBarController.visibleProperty().bind(countdownController.visibleProperty().not());
-        countdownBarController.yearProperty().bind(yearProperty());
-        countdownBarController.timeUntilNewYearProperty().bind(timeUntilNewYearProperty());
+        countdownBarController.setCountdownModel(countdownModel);
 
         // Initialize slideshow
         slideshowController.slidesProperty().bind(slidesProperty());
