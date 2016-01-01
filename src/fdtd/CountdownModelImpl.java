@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class CountdownModelImpl {
+public class CountdownModelImpl implements CountdownModel {
 
     private final ObjectProperty<LocalDateTime> now = new SimpleObjectProperty<>(LocalDateTime.MIN);
     private final IntegerBinding year;
@@ -28,27 +28,27 @@ public class CountdownModelImpl {
     }
 
     public CountdownModelImpl(int year) {
-        this(getNewYearDate(year));
+        this(CountdownModel.getNewYearDate(year));
     }
 
+    @Override
     public final ObservableIntegerValue yearProperty() {
         return year;
     }
 
+    @Override
     public final ObjectProperty<LocalDateTime> nowProperty() {
         return now;
     }
 
+    @Override
     public final ObjectProperty<LocalDateTime> newYearProperty() {
         return newYear;
     }
 
+    @Override
     public final ObservableObjectValue<Duration> differenceProperty() {
         return difference;
-    }
-
-    public static LocalDateTime getNewYearDate(int year) {
-        return LocalDateTime.of(LocalDate.ofYearDay(year, 1), LocalTime.MIDNIGHT);
     }
 
 }
