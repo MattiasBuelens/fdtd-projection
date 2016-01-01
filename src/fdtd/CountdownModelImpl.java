@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class CountdownModel {
+public class CountdownModelImpl {
 
     private final ObjectProperty<LocalDateTime> now = new SimpleObjectProperty<>(LocalDateTime.MIN);
     private final IntegerBinding year;
@@ -21,13 +21,13 @@ public class CountdownModel {
     private final ObjectProperty<LocalDateTime> newYear = new SimpleObjectProperty<>(LocalDateTime.MIN);
     private final ObjectBinding<Duration> difference;
 
-    public CountdownModel(LocalDateTime newYear) {
+    public CountdownModelImpl(LocalDateTime newYear) {
         newYearProperty().set(newYear);
         year = Bindings.createIntegerBinding(() -> newYearProperty().get().getYear(), newYearProperty());
         difference = Bindings.createObjectBinding(() -> Duration.between(now.get(), newYearProperty().get()), now, newYearProperty());
     }
 
-    public CountdownModel(int year) {
+    public CountdownModelImpl(int year) {
         this(getNewYearDate(year));
     }
 

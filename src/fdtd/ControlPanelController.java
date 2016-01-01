@@ -165,7 +165,7 @@ public class ControlPanelController {
         });
 
         // Default new year
-        newYear.set(CountdownModel.getNewYearDate(Main.NEW_YEAR));
+        newYear.set(CountdownModelImpl.getNewYearDate(Main.NEW_YEAR));
         newYearDate.set(newYear.get().toLocalDate());
         newYearTime.set(newYear.get().toLocalTime());
         newYearTimeString.set(timeFormat.format(newYearTime.get()));
