@@ -46,7 +46,7 @@ public class MainController {
     @FXML
     private CountdownBarController countdownBarController;
 
-    private final CountdownModelImpl countdownModel = new CountdownModelImpl(Main.NEW_YEAR);
+    private final CountdownModelImpl countdownModel = new CountdownModelImpl();
     private final Timeline countdownClock;
 
     private final ObservableList<ScreenController> screens = FXCollections.observableArrayList();

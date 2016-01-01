@@ -21,10 +21,14 @@ public class CountdownModelImpl implements CountdownModel {
     private final ObjectProperty<LocalDateTime> newYear = new SimpleObjectProperty<>(LocalDateTime.MIN);
     private final ObjectBinding<Duration> difference;
 
-    public CountdownModelImpl(LocalDateTime newYear) {
-        newYearProperty().set(newYear);
+    public CountdownModelImpl() {
         year = Bindings.createIntegerBinding(() -> newYearProperty().get().getYear(), newYearProperty());
         difference = Bindings.createObjectBinding(() -> Duration.between(now.get(), newYearProperty().get()), now, newYearProperty());
+    }
+
+    public CountdownModelImpl(LocalDateTime newYear) {
+        this();
+        newYearProperty().set(newYear);
     }
 
     public CountdownModelImpl(int year) {
