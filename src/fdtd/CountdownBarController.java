@@ -51,7 +51,7 @@ public class CountdownBarController extends ScreenController {
 
     private String formatTime(long seconds) {
         seconds = Math.abs(seconds);
-        long hours = (seconds / 3600) % 60;
+        long hours = seconds / 3600;
         long minutes = (seconds / 60) % 60;
         seconds = seconds % 60;
         return String.format(Locale.US, "%02d:%02d:%02d", hours, minutes, seconds);
