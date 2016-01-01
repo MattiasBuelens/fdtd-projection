@@ -155,22 +155,9 @@ public class SlideshowController extends ScreenController {
         return slideshowRoot.visibleProperty();
     }
 
-    public final ObservableList<Image> getSlides() {
-        return slidesProperty().get();
-    }
-
-    public final ListExpression<Image> slidesProperty() {
-        return slides;
-    }
-
-    public ObjectProperty<Duration> transitionDurationProperty() {
-        return transitionDuration;
-    }
-
-    public ObjectProperty<Duration> slideDurationProperty() {
-        return slideDuration;
-    }
-
+    /**
+     * Slideshow model.
+     */
     public final SlideshowModel getSlideshowModel() {
         return slideshowModelProperty().get();
     }
@@ -181,6 +168,31 @@ public class SlideshowController extends ScreenController {
 
     public final ObjectProperty<SlideshowModel> slideshowModelProperty() {
         return model;
+    }
+
+    /**
+     * Slides.
+     */
+    public final ObservableList<Image> getSlides() {
+        return slidesProperty().get();
+    }
+
+    public final ListExpression<Image> slidesProperty() {
+        return slides;
+    }
+
+    /**
+     * Duration of transitions between slides.
+     */
+    public ObjectProperty<Duration> transitionDurationProperty() {
+        return transitionDuration;
+    }
+
+    /**
+     * Duration of a single slide.
+     */
+    public ObjectProperty<Duration> slideDurationProperty() {
+        return slideDuration;
     }
 
 }

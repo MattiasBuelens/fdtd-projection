@@ -48,6 +48,21 @@ public abstract class ScreenController {
     }
 
     /**
+     * Countdown model.
+     */
+    public final CountdownModel getCountdownModel() {
+        return countdownModelProperty().get();
+    }
+
+    public final void setCountdownModel(CountdownModel countdownModel) {
+        countdownModelProperty().set(countdownModel);
+    }
+
+    public final ObjectProperty<CountdownModel> countdownModelProperty() {
+        return countdownModel;
+    }
+
+    /**
      * The screen's desired visibility.
      */
     public final ScreenVisibility getScreenVisibility() {
@@ -112,20 +127,5 @@ public abstract class ScreenController {
     }
 
     // endregion
-
-    /**
-     * Countdown model.
-     */
-    public final CountdownModel getCountdownModel() {
-        return countdownModelProperty().get();
-    }
-
-    public final void setCountdownModel(CountdownModel countdownModel) {
-        countdownModelProperty().set(countdownModel);
-    }
-
-    public final ObjectProperty<CountdownModel> countdownModelProperty() {
-        return countdownModel;
-    }
 
 }
