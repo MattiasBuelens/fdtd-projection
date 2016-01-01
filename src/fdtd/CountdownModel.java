@@ -31,19 +31,19 @@ public class CountdownModel {
         this(getNewYearDate(year));
     }
 
-    public ObservableIntegerValue yearProperty() {
+    public final ObservableIntegerValue yearProperty() {
         return year;
     }
 
-    public ObjectProperty<LocalDateTime> nowProperty() {
+    public final ObjectProperty<LocalDateTime> nowProperty() {
         return now;
     }
 
-    public ObjectProperty<LocalDateTime> newYearProperty() {
+    public final ObjectProperty<LocalDateTime> newYearProperty() {
         return newYear;
     }
 
-    public ObservableObjectValue<Duration> differenceProperty() {
+    public final ObservableObjectValue<Duration> differenceProperty() {
         return difference;
     }
 
