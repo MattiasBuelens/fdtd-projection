@@ -4,10 +4,7 @@ import fdtd.util.MappedList;
 import fdtd.util.Memoizer;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanExpression;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -24,6 +21,12 @@ import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 
 public class ControlPanelController {
 
@@ -46,6 +49,12 @@ public class ControlPanelController {
     private Label labelSlideDuration;
 
     @FXML
+    private DatePicker dateNewYear;
+
+    @FXML
+    private TextField timeNewYear;
+
+    @FXML
     private Button buttonStart;
 
     @FXML
@@ -59,6 +68,19 @@ public class ControlPanelController {
 
     private final ObjectProperty<SlideshowPreset> slideshowPreset = new SimpleObjectProperty<>();
     private final ObjectProperty<Duration> slideDuration = new SimpleObjectProperty<>();
+
+    private final ObjectProperty<LocalDateTime> newYear = new SimpleObjectProperty<>();
+    private final ObjectProperty<LocalDate> newYearDate = new SimpleObjectProperty<>();
+    private final ObjectProperty<LocalTime> newYearTime = new SimpleObjectProperty<>();
+    private final StringProperty newYearTimeString = new SimpleStringProperty();
+
+    private final DateTimeFormatter timeFormat = new DateTimeFormatterBuilder()
+            .appendValue(ChronoField.HOUR_OF_DAY, 2)
+            .appendLiteral(':')
+            .appendValue(ChronoField.MINUTE_OF_HOUR, 2)
+            .appendLiteral(':')
+            .appendValue(ChronoField.SECOND_OF_MINUTE, 2)
+            .toFormatter();
 
     private final ObservableList<Screen> screens = Screen.getScreens();
     private final ObjectProperty<Screen> projectionScreen = new SimpleObjectProperty<>();
@@ -111,6 +133,42 @@ public class ControlPanelController {
                 updateSlides();
             }
         });
+
+        newYear.addListener((observable, oldValue, newValue) -> {
+            if (oldValue != null && !oldValue.equals(newValue)) {
+                newYearDate.set(newValue.toLocalDate());
+                newYearTime.set(newValue.toLocalTime());
+            }
+        });
+
+        newYearDate.addListener((observable, oldValue, newValue) -> {
+            if (oldValue != null && !oldValue.equals(newValue)) {
+                newYear.set(LocalDateTime.of(newValue, newYearTime.get()));
+            }
+        });
+
+        newYearTime.addListener((observable, oldValue, newValue) -> {
+            if (oldValue != null && !oldValue.equals(newValue)) {
+                newYear.set(LocalDateTime.of(newYearDate.get(), newValue));
+                newYearTimeString.set(timeFormat.format(newValue));
+            }
+        });
+
+        newYearTimeString.addListener((observable, oldValue, newValue) -> {
+            if (oldValue != null && !oldValue.equals(newValue)) {
+                try {
+                    newYearTime.set(timeFormat.parse(newValue, LocalTime::from));
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        });
+
+        // Default new year
+        newYear.set(CountdownModel.getNewYearDate(Main.NEW_YEAR));
+        newYearDate.set(newYear.get().toLocalDate());
+        newYearTime.set(newYear.get().toLocalTime());
+        newYearTimeString.set(timeFormat.format(newYearTime.get()));
     }
 
     public void initialize() {
@@ -134,6 +192,9 @@ public class ControlPanelController {
                         sliderSlideDuration.valueProperty()
                 )
         );
+
+        dateNewYear.valueProperty().bindBidirectional(newYearDate);
+        timeNewYear.textProperty().bindBidirectional(newYearTimeString);
 
         buttonStart.disableProperty().bind(runningProperty());
         buttonStop.disableProperty().bind(runningProperty().not());
@@ -221,6 +282,7 @@ public class ControlPanelController {
 
         projectionController = fxmlLoader.getController();
         projectionController.slideDurationProperty().bind(slideDurationProperty());
+        projectionController.newYearProperty().bind(newYear);
         updateSlides();
 
         projectionStage.show();

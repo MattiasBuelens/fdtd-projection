@@ -202,6 +202,18 @@ public class MainController {
         return countdownModel.differenceProperty();
     }
 
+    public final LocalDateTime getNewYear() {
+        return newYearProperty().get();
+    }
+
+    public final void setNewYear(LocalDateTime newYear) {
+        newYearProperty().set(newYear);
+    }
+
+    public final ObjectProperty<LocalDateTime> newYearProperty() {
+        return countdownModel.newYearProperty();
+    }
+
     public final int getYear() {
         return yearProperty().get();
     }

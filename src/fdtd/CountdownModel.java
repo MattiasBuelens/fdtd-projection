@@ -1,11 +1,11 @@
 package fdtd;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
 import javafx.beans.binding.ObjectBinding;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableIntegerValue;
 import javafx.beans.value.ObservableObjectValue;
 
 import java.time.Duration;
@@ -16,22 +16,22 @@ import java.time.LocalTime;
 public class CountdownModel {
 
     private final ObjectProperty<LocalDateTime> now = new SimpleObjectProperty<>(LocalDateTime.MIN);
-    private final IntegerProperty year = new SimpleIntegerProperty();
+    private final IntegerBinding year;
 
-    private final ObjectBinding<LocalDateTime> newYear;
+    private final ObjectProperty<LocalDateTime> newYear = new SimpleObjectProperty<>(LocalDateTime.MIN);
     private final ObjectBinding<Duration> difference;
 
-    public CountdownModel() {
-        newYear = Bindings.createObjectBinding(() -> getNewYearDate(year.get()), year);
-        difference = Bindings.createObjectBinding(() -> Duration.between(now.get(), newYear.get()), now, newYear);
+    public CountdownModel(LocalDateTime newYear) {
+        newYearProperty().set(newYear);
+        year = Bindings.createIntegerBinding(() -> newYearProperty().get().getYear(), newYearProperty());
+        difference = Bindings.createObjectBinding(() -> Duration.between(now.get(), newYearProperty().get()), now, newYearProperty());
     }
 
-    public CountdownModel(int initialYear) {
-        this();
-        year.set(initialYear);
+    public CountdownModel(int year) {
+        this(getNewYearDate(year));
     }
 
-    public IntegerProperty yearProperty() {
+    public ObservableIntegerValue yearProperty() {
         return year;
     }
 
@@ -39,7 +39,7 @@ public class CountdownModel {
         return now;
     }
 
-    public ObservableObjectValue<LocalDateTime> newYearProperty() {
+    public ObjectProperty<LocalDateTime> newYearProperty() {
         return newYear;
     }
 
@@ -47,7 +47,7 @@ public class CountdownModel {
         return difference;
     }
 
-    private static LocalDateTime getNewYearDate(int year) {
+    public static LocalDateTime getNewYearDate(int year) {
         return LocalDateTime.of(LocalDate.ofYearDay(year, 1), LocalTime.MIDNIGHT);
     }
 

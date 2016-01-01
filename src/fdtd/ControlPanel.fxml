@@ -5,7 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="root" stylesheets="@res/ControlPanel.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fdtd.ControlPanelController">
+<BorderPane fx:id="root" stylesheets="@res/ControlPanel.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fdtd.ControlPanelController">
     <center>
         <GridPane hgap="5.0" vgap="5.0">
             <columnConstraints>
@@ -14,6 +14,7 @@
                 <ColumnConstraints hgrow="NEVER" minWidth="50.0" prefWidth="100.0" />
             </columnConstraints>
             <rowConstraints>
+                <RowConstraints />
                 <RowConstraints />
                 <RowConstraints />
                 <RowConstraints />
@@ -30,6 +31,9 @@
                 <Label text="Tijd per slide" GridPane.rowIndex="4" />
                 <Slider fx:id="sliderSlideDuration" max="60.0" min="1.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                 <Label fx:id="labelSlideDuration" text="5 seconden" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                <Label text="Nieuwjaar" GridPane.rowIndex="5" />
+                <DatePicker fx:id="dateNewYear" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <TextField fx:id="timeNewYear" GridPane.columnIndex="2" GridPane.rowIndex="5" />
             </children>
         </GridPane>
     </center>
