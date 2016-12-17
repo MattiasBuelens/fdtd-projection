@@ -12,7 +12,7 @@ public class Memoizer<T, U> {
 
     private Memoizer(final Function<T, U> function) {
         this.function = function;
-        this.memoized = (input) -> cache.computeIfAbsent(input, this.function::apply);
+        this.memoized = (input) -> cache.computeIfAbsent(input, this.function);
     }
 
     public static <T, U> Function<T, U> memoize(final Function<T, U> function) {
