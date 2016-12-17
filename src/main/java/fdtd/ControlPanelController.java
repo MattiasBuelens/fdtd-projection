@@ -1,6 +1,5 @@
 package fdtd;
 
-import fdtd.util.MappedList;
 import fdtd.util.Memoizer;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanExpression;
@@ -21,6 +20,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
+import org.fxmisc.easybind.EasyBind;
 
 import java.io.IOException;
 import java.net.URL;
@@ -291,7 +291,7 @@ public class ControlPanelController {
     }
 
     private static ObservableList<Image> getPresetSlides(SlideshowPreset preset) {
-        return new MappedList<>(preset.getImageURLs(), Memoizer.memoize(ControlPanelController::createImage));
+        return EasyBind.map(preset.getImageURLs(), Memoizer.memoize(ControlPanelController::createImage));
     }
 
     private static Image createImage(URL imageURL) {
