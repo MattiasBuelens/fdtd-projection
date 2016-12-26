@@ -3,8 +3,8 @@ package fdtd;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ObservableObjectValue;
 import javafx.beans.value.ObservableStringValue;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -58,7 +58,7 @@ public class CountdownBarController extends ScreenController {
     }
 
     @Override
-    public ObservableObjectValue<ScreenVisibility> screenVisibilityProperty() {
+    public ObservableValue<ScreenVisibility> screenVisibilityProperty() {
         return screenVisibility.getReadOnlyProperty();
     }
 

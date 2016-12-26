@@ -3,7 +3,7 @@ package fdtd;
 import javafx.animation.*;
 import javafx.beans.binding.ListExpression;
 import javafx.beans.property.*;
-import javafx.beans.value.ObservableObjectValue;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -146,7 +146,7 @@ public class SlideshowController extends ScreenController {
     }
 
     @Override
-    public ObservableObjectValue<ScreenVisibility> screenVisibilityProperty() {
+    public ObservableValue<ScreenVisibility> screenVisibilityProperty() {
         return screenVisibility.getReadOnlyProperty();
     }
 

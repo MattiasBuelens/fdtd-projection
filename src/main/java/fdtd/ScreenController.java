@@ -7,7 +7,6 @@ import javafx.beans.binding.LongExpression;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableObjectValue;
 import javafx.beans.value.ObservableValue;
 import org.fxmisc.easybind.EasyBind;
 
@@ -66,10 +65,10 @@ public abstract class ScreenController {
      * The screen's desired visibility.
      */
     public final ScreenVisibility getScreenVisibility() {
-        return screenVisibilityProperty().get();
+        return screenVisibilityProperty().getValue();
     }
 
-    public abstract ObservableObjectValue<ScreenVisibility> screenVisibilityProperty();
+    public abstract ObservableValue<ScreenVisibility> screenVisibilityProperty();
 
     /**
      * The screen's actual visibility.

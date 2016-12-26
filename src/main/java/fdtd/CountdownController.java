@@ -6,8 +6,8 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.value.ObservableBooleanValue;
-import javafx.beans.value.ObservableObjectValue;
 import javafx.beans.value.ObservableStringValue;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.text.Text;
@@ -40,7 +40,7 @@ public class CountdownController extends ScreenController {
     @FXML
     private FireworksPane fireworks;
 
-    private final ObservableObjectValue<ScreenVisibility> screenVisibility;
+    private final ObservableValue<ScreenVisibility> screenVisibility;
 
     private final ObservableStringValue countdownString;
     private final BooleanBinding isFinale;
@@ -76,7 +76,7 @@ public class CountdownController extends ScreenController {
     }
 
     @Override
-    public ObservableObjectValue<ScreenVisibility> screenVisibilityProperty() {
+    public ObservableValue<ScreenVisibility> screenVisibilityProperty() {
         return screenVisibility;
     }
 
