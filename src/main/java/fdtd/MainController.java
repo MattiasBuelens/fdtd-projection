@@ -3,10 +3,12 @@ package fdtd;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.property.*;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableDoubleValue;
 import javafx.beans.value.ObservableIntegerValue;
-import javafx.beans.value.ObservableObjectValue;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -184,60 +186,24 @@ public class MainController {
     // region Properties
 
 
-    public final double getRem() {
-        return rem.get();
-    }
-
     public final ObservableDoubleValue remProperty() {
         return rem.getReadOnlyProperty();
-    }
-
-    public final Duration getTimeUntilNewYear() {
-        return timeUntilNewYearProperty().getValue();
     }
 
     public final ObservableValue<Duration> timeUntilNewYearProperty() {
         return countdownModel.timeUntilNewYearProperty();
     }
 
-    public final LocalDateTime getNewYear() {
-        return newYearProperty().get();
-    }
-
-    public final void setNewYear(LocalDateTime newYear) {
-        newYearProperty().set(newYear);
-    }
-
     public final ObjectProperty<LocalDateTime> newYearProperty() {
         return countdownModel.newYearProperty();
-    }
-
-    public final int getYear() {
-        return yearProperty().get();
     }
 
     public final ObservableIntegerValue yearProperty() {
         return countdownModel.yearProperty();
     }
 
-    public final ObservableList<Image> getSlides() {
-        return slidesProperty().get();
-    }
-
-    public final void setSlides(ObservableList<Image> slides) {
-        slidesProperty().set(slides);
-    }
-
     public final ListProperty<Image> slidesProperty() {
         return slideshowModel.slidesProperty();
-    }
-
-    public javafx.util.Duration getSlideDuration() {
-        return slideDurationProperty().get();
-    }
-
-    public void setSlideDuration(javafx.util.Duration slideDuration) {
-        slideDurationProperty().set(slideDuration);
     }
 
     public ObjectProperty<javafx.util.Duration> slideDurationProperty() {

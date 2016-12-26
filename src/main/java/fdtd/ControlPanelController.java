@@ -284,7 +284,7 @@ public class ControlPanelController {
 
     private void updateSlides() {
         if (projectionController != null) {
-            projectionController.setSlides(getPresetSlides(getSlideshowPreset()));
+            projectionController.slidesProperty().set(getPresetSlides(getSlideshowPreset()));
         }
     }
 
