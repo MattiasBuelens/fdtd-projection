@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import fdtd.DateTimePicker?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<BorderPane fx:id="root" stylesheets="@style/ControlPanel.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fdtd.ControlPanelController">
+<BorderPane fx:id="root" stylesheets="@style/ControlPanel.css"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="fdtd.ControlPanelController">
     <center>
         <GridPane hgap="5.0" vgap="5.0">
             <columnConstraints>

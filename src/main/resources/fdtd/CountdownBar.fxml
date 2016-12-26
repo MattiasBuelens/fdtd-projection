@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.*?>
-<?import javafx.scene.layout.HBox?>
 <HBox fx:id="barRoot" styleClass="overlay-bar" stylesheets="@style/Main.css"
-          xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="fdtd.CountdownBarController">
+      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="fdtd.CountdownBarController">
     <TextFlow>
         <Text fx:id="countdownCelebrating" styleClass="overlay-text" text="Celebrating "/>
         <Text fx:id="countdownYear" styleClass="overlay-text" text="2016"/>
