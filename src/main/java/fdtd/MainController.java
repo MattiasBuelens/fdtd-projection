@@ -193,10 +193,10 @@ public class MainController {
     }
 
     public final Duration getTimeUntilNewYear() {
-        return timeUntilNewYearProperty().get();
+        return timeUntilNewYearProperty().getValue();
     }
 
-    public final ObservableObjectValue<Duration> timeUntilNewYearProperty() {
+    public final ObservableValue<Duration> timeUntilNewYearProperty() {
         return countdownModel.timeUntilNewYearProperty();
     }
 

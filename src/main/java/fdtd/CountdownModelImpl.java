@@ -1,9 +1,12 @@
 package fdtd;
 
-import javafx.beans.binding.*;
+import javafx.beans.binding.BooleanExpression;
+import javafx.beans.binding.IntegerExpression;
+import javafx.beans.binding.LongExpression;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableObjectValue;
+import javafx.beans.value.ObservableValue;
+import org.fxmisc.easybind.EasyBind;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -11,20 +14,20 @@ import java.time.LocalDateTime;
 public class CountdownModelImpl implements CountdownModel {
 
     private final ObjectProperty<LocalDateTime> now = new SimpleObjectProperty<>(LocalDateTime.MIN);
-    private final IntegerBinding year;
+    private final IntegerExpression year;
 
     private final ObjectProperty<LocalDateTime> newYear = new SimpleObjectProperty<>(LocalDateTime.MIN);
-    private final ObjectBinding<Duration> difference;
+    private final ObservableValue<Duration> difference;
 
-    private final LongBinding secondsUntilNewYear;
-    private final LongBinding secondsSinceNewYear;
-    private final BooleanBinding isNewYear;
+    private final LongExpression secondsUntilNewYear;
+    private final LongExpression secondsSinceNewYear;
+    private final BooleanExpression isNewYear;
 
     public CountdownModelImpl() {
-        year = Bindings.createIntegerBinding(() -> newYearProperty().get().getYear(), newYearProperty());
-        difference = Bindings.createObjectBinding(() -> Duration.between(now.get(), newYearProperty().get()), now, newYearProperty());
+        year = IntegerExpression.integerExpression(EasyBind.map(newYearProperty(), LocalDateTime::getYear));
+        difference = EasyBind.combine(now, newYearProperty(), Duration::between);
 
-        secondsUntilNewYear = Bindings.createLongBinding(() -> timeUntilNewYearProperty().get().getSeconds(), timeUntilNewYearProperty());
+        secondsUntilNewYear = LongExpression.longExpression(EasyBind.map(timeUntilNewYearProperty(), Duration::getSeconds));
         secondsSinceNewYear = secondsUntilNewYear.negate();
         isNewYear = secondsSinceNewYear.greaterThanOrEqualTo(0d);
     }
@@ -54,7 +57,7 @@ public class CountdownModelImpl implements CountdownModel {
     }
 
     @Override
-    public final ObservableObjectValue<Duration> timeUntilNewYearProperty() {
+    public final ObservableValue<Duration> timeUntilNewYearProperty() {
         return difference;
     }
 

@@ -3,7 +3,7 @@ package fdtd;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.binding.IntegerExpression;
 import javafx.beans.binding.LongExpression;
-import javafx.beans.value.ObservableObjectValue;
+import javafx.beans.value.ObservableValue;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -14,11 +14,11 @@ public interface CountdownModel {
 
     IntegerExpression yearProperty();
 
-    ObservableObjectValue<LocalDateTime> nowProperty();
+    ObservableValue<LocalDateTime> nowProperty();
 
-    ObservableObjectValue<LocalDateTime> newYearProperty();
+    ObservableValue<LocalDateTime> newYearProperty();
 
-    ObservableObjectValue<Duration> timeUntilNewYearProperty();
+    ObservableValue<Duration> timeUntilNewYearProperty();
 
     LongExpression secondsUntilNewYearProperty();
 
