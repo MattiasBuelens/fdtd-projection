@@ -3,11 +3,11 @@ package fdtd;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ObservableStringValue;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import org.fxmisc.easybind.EasyBind;
 
 import java.util.Locale;
 
@@ -30,16 +30,16 @@ public class CountdownBarController extends ScreenController {
 
     private final ReadOnlyObjectWrapper<ScreenVisibility> screenVisibility = new ReadOnlyObjectWrapper<>();
 
-    private final ObservableStringValue countdownYearString;
-    private final ObservableStringValue countdownDirectionString;
-    private final ObservableStringValue countdownTimeString;
+    private final ObservableValue<String> countdownYearString;
+    private final ObservableValue<String> countdownDirectionString;
+    private final ObservableValue<String> countdownTimeString;
 
     public CountdownBarController() {
         screenVisibility.set(ScreenVisibility.CAN_SHOW);
 
         countdownYearString = Bindings.format(Locale.US, "%d", yearProperty());
-        countdownDirectionString = Bindings.createStringBinding(() -> isNewYear() ? " since " : " in ", isNewYearProperty());
-        countdownTimeString = Bindings.createStringBinding(() -> formatTime(getSecondsUntilNewYear()), secondsUntilNewYearProperty());
+        countdownDirectionString = EasyBind.map(isNewYearProperty(), (isNewYear) -> isNewYear ? " since " : " in ");
+        countdownTimeString = EasyBind.map(secondsUntilNewYearProperty(), Number::longValue).map(this::formatTime);
     }
 
     public void initialize() {

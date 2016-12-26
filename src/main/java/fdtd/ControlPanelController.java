@@ -146,10 +146,8 @@ public class ControlPanelController {
                 Bindings.format("%.0f seconden", sliderSlideDuration.valueProperty())
         );
         slideDurationProperty().bind(
-                Bindings.createObjectBinding(
-                        () -> Duration.seconds(sliderSlideDuration.getValue()),
-                        sliderSlideDuration.valueProperty()
-                )
+                EasyBind.map(sliderSlideDuration.valueProperty(), Number::doubleValue)
+                        .map(Duration::seconds)
         );
 
         datetimeNewYear.setDateTimeFormatter(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));

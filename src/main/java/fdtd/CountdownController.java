@@ -11,6 +11,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.text.Text;
+import org.fxmisc.easybind.EasyBind;
 
 import java.util.Locale;
 
@@ -57,7 +58,7 @@ public class CountdownController extends ScreenController {
 
         // must show only between start time and end time
         BooleanBinding mustShow = secondsUntilNewYearProperty().lessThanOrEqualTo(TIME_START).and(secondsSinceNewYearProperty().lessThanOrEqualTo(TIME_END));
-        screenVisibility = Bindings.createObjectBinding(() -> mustShow.get() ? ScreenVisibility.MUST_SHOW : ScreenVisibility.MUST_HIDE, mustShow);
+        screenVisibility = EasyBind.map(mustShow, (show) -> show ? ScreenVisibility.MUST_SHOW : ScreenVisibility.MUST_HIDE);
 
         secondsUntilNewYearProperty().addListener((observable, oldValue, newValue) -> playFinaleAnimation());
     }
