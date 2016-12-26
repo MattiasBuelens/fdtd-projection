@@ -6,7 +6,7 @@
 }
 
 #root,
-.countdown-bar,
+.overlay-bar,
 .countdown,
 .slideshow {
     -fx-font-family: Farray;
@@ -18,16 +18,16 @@
 
 /* endregion */
 
-/* region Countdown bar */
+/* region Overlay bar */
 
-.countdown-bar {
+.overlay-bar {
     -fx-padding: 1em;
     -fx-font-size: 3em;
     -fx-text-alignment: right;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 0.4em, 0.0, 0.4em, 0.4em);
 }
 
-.countdown-bar .countdown-text {
+.overlay-bar .overlay-text {
     -fx-fill: white;
 }
 
