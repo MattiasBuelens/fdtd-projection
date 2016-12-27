@@ -40,9 +40,14 @@ public abstract class ScreenController {
                 .orElse(Duration.ZERO);
         timeSinceNewYear = EasyBind.map(timeUntilNewYear, Duration::negated);
         secondsUntilNewYear = LongExpression.longExpression(
-                EasyBind.map(timeUntilNewYear, Duration::getSeconds));
+                EasyBind.map(timeUntilNewYear, ScreenController::getCeilingSeconds));
         secondsSinceNewYear = LongExpression.longExpression(EasyBind.map(timeSinceNewYear, Duration::getSeconds));
         isNewYear = secondsSinceNewYear.greaterThanOrEqualTo(0d);
+    }
+
+    private static long getCeilingSeconds(Duration duration) {
+        long seconds = duration.getSeconds();
+        return seconds + (duration.getNano() > 0 ? 1L : 0L);
     }
 
     /**
