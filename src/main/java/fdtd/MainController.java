@@ -3,6 +3,7 @@ package fdtd;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
@@ -48,6 +49,9 @@ public class MainController {
     @FXML
     private CountdownBarController countdownBarController;
 
+    @FXML
+    private MessageBarController messageBarController;
+
     private final CountdownModelImpl countdownModel = new CountdownModelImpl();
     private final Timeline countdownClock;
 
@@ -56,6 +60,8 @@ public class MainController {
 
     private final SlideshowModel slideshowModel = new SlideshowModel();
     private final ObjectProperty<javafx.util.Duration> slideDuration = new SimpleObjectProperty<>(javafx.util.Duration.seconds(5));
+
+    private final ObservableList<TimedMessage> timedMessages = FXCollections.observableArrayList(TimedMessagePreset.MESSAGES);
 
     private final ViewportUnits viewportUnits = new ViewportUnits();
     private final ReadOnlyDoubleWrapper rem = new ReadOnlyDoubleWrapper(16d);
@@ -100,9 +106,16 @@ public class MainController {
             screen.setCountdownModel(countdownModel);
         }
 
+        BooleanExpression barsVisible = countdownController.visibleProperty().not();
+
         // Initialize countdown bar
-        countdownBarController.visibleProperty().bind(countdownController.visibleProperty().not());
+        countdownBarController.visibleProperty().bind(barsVisible);
         countdownBarController.setCountdownModel(countdownModel);
+
+        // Initialize message bar
+        messageBarController.visibleProperty().bind(barsVisible);
+        messageBarController.setCountdownModel(countdownModel);
+        messageBarController.setMessages(timedMessages);
 
         // Initialize slideshow
         slideshowController.setSlideshowModel(slideshowModel);
