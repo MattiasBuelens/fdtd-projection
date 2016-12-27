@@ -1,8 +1,6 @@
 package fdtd;
 
-import javafx.beans.binding.BooleanExpression;
 import javafx.beans.binding.IntegerExpression;
-import javafx.beans.binding.LongExpression;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
@@ -17,19 +15,11 @@ public class CountdownModelImpl implements CountdownModel {
     private final IntegerExpression year;
 
     private final ObjectProperty<LocalDateTime> newYear = new SimpleObjectProperty<>(LocalDateTime.MIN);
-    private final ObservableValue<Duration> difference;
-
-    private final LongExpression secondsUntilNewYear;
-    private final LongExpression secondsSinceNewYear;
-    private final BooleanExpression isNewYear;
+    private final ObservableValue<Duration> timeUntilNewYear;
 
     public CountdownModelImpl() {
         year = IntegerExpression.integerExpression(EasyBind.map(newYearProperty(), LocalDateTime::getYear));
-        difference = EasyBind.combine(now, newYearProperty(), Duration::between);
-
-        secondsUntilNewYear = LongExpression.longExpression(EasyBind.map(timeUntilNewYearProperty(), Duration::getSeconds));
-        secondsSinceNewYear = secondsUntilNewYear.negate();
-        isNewYear = secondsSinceNewYear.greaterThanOrEqualTo(0d);
+        timeUntilNewYear = EasyBind.combine(now, newYearProperty(), Duration::between);
     }
 
     public CountdownModelImpl(LocalDateTime newYear) {
@@ -58,22 +48,8 @@ public class CountdownModelImpl implements CountdownModel {
 
     @Override
     public final ObservableValue<Duration> timeUntilNewYearProperty() {
-        return difference;
+        return timeUntilNewYear;
     }
 
-    @Override
-    public LongExpression secondsUntilNewYearProperty() {
-        return secondsUntilNewYear;
-    }
-
-    @Override
-    public LongExpression secondsSinceNewYearProperty() {
-        return secondsSinceNewYear;
-    }
-
-    @Override
-    public BooleanExpression isNewYearProperty() {
-        return isNewYear;
-    }
 
 }

@@ -1,8 +1,6 @@
 package fdtd;
 
-import javafx.beans.binding.BooleanExpression;
 import javafx.beans.binding.IntegerExpression;
-import javafx.beans.binding.LongExpression;
 import javafx.beans.value.ObservableValue;
 
 import java.time.Duration;
@@ -19,12 +17,6 @@ public interface CountdownModel {
     ObservableValue<LocalDateTime> newYearProperty();
 
     ObservableValue<Duration> timeUntilNewYearProperty();
-
-    LongExpression secondsUntilNewYearProperty();
-
-    LongExpression secondsSinceNewYearProperty();
-
-    BooleanExpression isNewYearProperty();
 
     static LocalDateTime getNewYearDate(int year) {
         return LocalDateTime.of(LocalDate.ofYearDay(year, 1), LocalTime.MIDNIGHT);

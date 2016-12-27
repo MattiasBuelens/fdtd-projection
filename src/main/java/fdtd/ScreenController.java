@@ -24,6 +24,7 @@ public abstract class ScreenController {
 
     private final IntegerExpression year;
     private final Binding<Duration> timeUntilNewYear;
+    private final Binding<Duration> timeSinceNewYear;
     private final LongExpression secondsUntilNewYear;
     private final LongExpression secondsSinceNewYear;
     private final BooleanExpression isNewYear;
@@ -31,19 +32,17 @@ public abstract class ScreenController {
     protected ScreenController() {
         year = IntegerExpression.integerExpression(EasyBind
                 .select(countdownModelProperty())
-                .selectObject(CountdownModel::yearProperty));
+                .selectObject(CountdownModel::yearProperty)
+                .orElse(0));
         timeUntilNewYear = EasyBind
                 .select(countdownModelProperty())
-                .selectObject(CountdownModel::timeUntilNewYearProperty);
-        secondsUntilNewYear = LongExpression.longExpression(EasyBind
-                .select(countdownModelProperty())
-                .selectObject(CountdownModel::secondsUntilNewYearProperty));
-        secondsSinceNewYear = LongExpression.longExpression(EasyBind
-                .select(countdownModelProperty())
-                .selectObject(CountdownModel::secondsSinceNewYearProperty));
-        isNewYear = BooleanExpression.booleanExpression(EasyBind
-                .select(countdownModelProperty())
-                .selectObject(CountdownModel::isNewYearProperty));
+                .selectObject(CountdownModel::timeUntilNewYearProperty)
+                .orElse(Duration.ZERO);
+        timeSinceNewYear = EasyBind.map(timeUntilNewYear, Duration::negated);
+        secondsUntilNewYear = LongExpression.longExpression(
+                EasyBind.map(timeUntilNewYear, Duration::getSeconds));
+        secondsSinceNewYear = LongExpression.longExpression(EasyBind.map(timeSinceNewYear, Duration::getSeconds));
+        isNewYear = secondsSinceNewYear.greaterThanOrEqualTo(0d);
     }
 
     /**
@@ -91,6 +90,14 @@ public abstract class ScreenController {
 
     public final ObservableValue<Duration> timeUntilNewYearProperty() {
         return timeUntilNewYear;
+    }
+
+    public final Duration getTimeSinceNewYear() {
+        return timeSinceNewYear.getValue();
+    }
+
+    public final ObservableValue<Duration> timeSinceNewYearProperty() {
+        return timeSinceNewYear;
     }
 
     public final int getYear() {
