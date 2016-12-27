@@ -34,21 +34,15 @@ public abstract class ScreenController {
                 .select(countdownModelProperty())
                 .selectObject(CountdownModel::yearProperty)
                 .orElse(0));
-        timeUntilNewYear = EasyBind
+        timeSinceNewYear = EasyBind
                 .select(countdownModelProperty())
-                .selectObject(CountdownModel::timeUntilNewYearProperty)
+                .selectObject(CountdownModel::timeSinceNewYearProperty)
                 .orElse(Duration.ZERO);
-        timeSinceNewYear = EasyBind.map(timeUntilNewYear, Duration::negated);
-        secondsUntilNewYear = LongExpression.longExpression(
-                EasyBind.map(timeUntilNewYear, ScreenController::getCeilingSeconds));
+        timeUntilNewYear = EasyBind.map(timeSinceNewYear, Duration::negated);
         secondsSinceNewYear = LongExpression.longExpression(
                 EasyBind.map(timeSinceNewYear, Duration::getSeconds));
+        secondsUntilNewYear = secondsSinceNewYear.negate();
         isNewYear = secondsSinceNewYear.greaterThanOrEqualTo(0d);
-    }
-
-    private static long getCeilingSeconds(Duration duration) {
-        long seconds = duration.getSeconds();
-        return seconds + (duration.getNano() > 0 ? 1L : 0L);
     }
 
     /**

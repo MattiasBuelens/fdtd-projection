@@ -15,11 +15,11 @@ public class CountdownModelImpl implements CountdownModel {
     private final IntegerExpression year;
 
     private final ObjectProperty<LocalDateTime> newYear = new SimpleObjectProperty<>(LocalDateTime.MIN);
-    private final ObservableValue<Duration> timeUntilNewYear;
+    private final ObservableValue<Duration> timeSinceNewYear;
 
     public CountdownModelImpl() {
         year = IntegerExpression.integerExpression(EasyBind.map(newYearProperty(), LocalDateTime::getYear));
-        timeUntilNewYear = EasyBind.combine(now, newYearProperty(), Duration::between);
+        timeSinceNewYear = EasyBind.combine(newYearProperty(), now, Duration::between);
     }
 
     public CountdownModelImpl(LocalDateTime newYear) {
@@ -47,8 +47,8 @@ public class CountdownModelImpl implements CountdownModel {
     }
 
     @Override
-    public final ObservableValue<Duration> timeUntilNewYearProperty() {
-        return timeUntilNewYear;
+    public final ObservableValue<Duration> timeSinceNewYearProperty() {
+        return timeSinceNewYear;
     }
 
 

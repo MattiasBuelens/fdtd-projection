@@ -203,8 +203,8 @@ public class MainController {
         return rem.getReadOnlyProperty();
     }
 
-    public final ObservableValue<Duration> timeUntilNewYearProperty() {
-        return countdownModel.timeUntilNewYearProperty();
+    public final ObservableValue<Duration> timeSinceNewYearProperty() {
+        return countdownModel.timeSinceNewYearProperty();
     }
 
     public final ObjectProperty<LocalDateTime> newYearProperty() {

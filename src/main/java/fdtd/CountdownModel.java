@@ -16,7 +16,7 @@ public interface CountdownModel {
 
     ObservableValue<LocalDateTime> newYearProperty();
 
-    ObservableValue<Duration> timeUntilNewYearProperty();
+    ObservableValue<Duration> timeSinceNewYearProperty();
 
     static LocalDateTime getNewYearDate(int year) {
         return LocalDateTime.of(LocalDate.ofYearDay(year, 1), LocalTime.MIDNIGHT);
