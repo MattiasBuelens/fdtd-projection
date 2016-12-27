@@ -41,7 +41,8 @@ public abstract class ScreenController {
         timeSinceNewYear = EasyBind.map(timeUntilNewYear, Duration::negated);
         secondsUntilNewYear = LongExpression.longExpression(
                 EasyBind.map(timeUntilNewYear, ScreenController::getCeilingSeconds));
-        secondsSinceNewYear = LongExpression.longExpression(EasyBind.map(timeSinceNewYear, Duration::getSeconds));
+        secondsSinceNewYear = LongExpression.longExpression(
+                EasyBind.map(timeSinceNewYear, Duration::getSeconds));
         isNewYear = secondsSinceNewYear.greaterThanOrEqualTo(0d);
     }
 
