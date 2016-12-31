@@ -232,7 +232,7 @@ public class ControlPanelController {
 
         projectionStage = new Stage();
         projectionStage.setTitle("From Dusk Till Dawn - Projectie");
-        projectionStage.setScene(new Scene(root, 400, 300));
+        projectionStage.setScene(new Scene(root, 480, 270)); // 16:9
         projectionStage.setFullScreenExitHint("");
         projectionStage.fullScreenProperty().addListener(this::onStageFullScreenChanged);
         projectionStage.setOnCloseRequest(event -> destroyProjection());
