@@ -6,7 +6,7 @@
 
     <groupId>com.buelens.mattias.fdtd</groupId>
     <artifactId>fdtd-projection</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.1</version>
 
     <properties>
         <jdk.version>1.8</jdk.version>
