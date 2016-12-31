@@ -83,7 +83,7 @@ public class MainController {
 
         // Update countdown a few times per second
         countdownClock = new Timeline(
-                new KeyFrame(javafx.util.Duration.millis(250), event -> updateModel())
+                new KeyFrame(javafx.util.Duration.millis(100), event -> updateModel())
         );
         countdownClock.setCycleCount(Animation.INDEFINITE);
 
