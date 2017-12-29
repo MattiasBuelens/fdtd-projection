@@ -37,7 +37,28 @@ public enum EditionPreset {
             new TimedMessageImpl("Now playing: Dave Lambert", Duration.ofHours(1).plusMinutes(30)),
             new TimedMessageImpl("Now playing: Kastaar", Duration.ofHours(2).plusMinutes(30)),
             new TimedMessageImpl("Now playing: Boost", Duration.ofHours(4))
-    });
+    }),
+
+    Y2016("2015-2016", new SlideshowPreset[]{
+            new SlideshowPreset("Bar",
+                    "images/2016/Bar1.jpg",
+                    "images/2016/Bar2.jpg",
+                    "images/2016/Bar3.jpg"
+            ),
+            new SlideshowPreset("Bonnekes",
+                    "images/2016/Bonnekes1.jpg",
+                    "images/2016/Bonnekes2.jpg",
+                    "images/2016/Bonnekes3.jpg"
+            ),
+            new SlideshowPreset("Champagne en Cocktails",
+                    "images/2016/Champagne1.jpg",
+                    "images/2016/Champagne2.jpg",
+                    "images/2016/Champagne3.jpg",
+                    "images/2016/Cocktails1.jpg",
+                    "images/2016/Cocktails2.jpg",
+                    "images/2016/Cocktails3.jpg"
+            )
+    }, new TimedMessage[0]);
 
     private final ReadOnlyStringWrapper title = new ReadOnlyStringWrapper();
     private final ReadOnlyListWrapper<SlideshowPreset> slideshows = new ReadOnlyListWrapper<>(FXCollections.observableArrayList());
