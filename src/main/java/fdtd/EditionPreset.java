@@ -12,9 +12,24 @@ import java.time.Duration;
 public enum EditionPreset {
 
     Y2017("2016-2017", new SlideshowPreset[]{
-            new SlideshowPreset("Bar", "images/Bar1.jpg", "images/Bar2.jpg", "images/Bar3.jpg"),
-            new SlideshowPreset("Bonnekes", "images/Bonnekes1.jpg", "images/Bonnekes2.jpg", "images/Bonnekes3.jpg"),
-            new SlideshowPreset("Champagne en Cocktails", "images/Champagne1.jpg", "images/Champagne2.jpg", "images/Champagne3.jpg", "images/Cocktails1.jpg", "images/Cocktails2.jpg", "images/Cocktails3.jpg")
+            new SlideshowPreset("Bar",
+                    "images/2017/Bar1.jpg",
+                    "images/2017/Bar2.jpg",
+                    "images/2017/Bar3.jpg"
+            ),
+            new SlideshowPreset("Bonnekes",
+                    "images/2017/Bonnekes1.jpg",
+                    "images/2017/Bonnekes2.jpg",
+                    "images/2017/Bonnekes3.jpg"
+            ),
+            new SlideshowPreset("Champagne en Cocktails",
+                    "images/2017/Champagne1.jpg",
+                    "images/2017/Champagne2.jpg",
+                    "images/2017/Champagne3.jpg",
+                    "images/2017/Cocktails1.jpg",
+                    "images/2017/Cocktails2.jpg",
+                    "images/2017/Cocktails3.jpg"
+            )
     }, new TimedMessage[]{
             new TimedMessageImpl("Now playing: Tzitwelsnor", Duration.ofHours(22).minusDays(1)),
             new TimedMessageImpl("Now playing: Supernovazz", Duration.ofHours(23).minusDays(1)),
