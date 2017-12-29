@@ -34,6 +34,9 @@ public class ControlPanelController {
     private Parent root;
 
     @FXML
+    private ChoiceBox<EditionPreset> choiceEditionPreset;
+
+    @FXML
     private ChoiceBox<SlideshowPreset> choiceSlideshowPreset;
 
     @FXML
@@ -147,6 +150,10 @@ public class ControlPanelController {
     }
 
     public void initialize() {
+        choiceEditionPreset.setConverter(new EditionPresetConverter());
+        choiceEditionPreset.getItems().addAll(EditionPreset.values());
+        choiceEditionPreset.valueProperty().bindBidirectional(editionPresetProperty());
+
         choiceSlideshowPreset.setConverter(new SlideshowPresetConverter());
         choiceSlideshowPreset.itemsProperty().bind(slideshowsProperty());
         choiceSlideshowPreset.valueProperty().bindBidirectional(slideshowPresetProperty());
@@ -349,6 +356,20 @@ public class ControlPanelController {
             return String.format("%d - Scherm (%.0f \u00d7 %.0f)",
                     (index + 1), screen.getBounds().getWidth(), screen.getBounds().getHeight());
         }
+    }
+
+    private class EditionPresetConverter extends StringConverter<EditionPreset> {
+
+        @Override
+        public String toString(EditionPreset preset) {
+            return preset.getTitle();
+        }
+
+        @Override
+        public EditionPreset fromString(String title) {
+            return EditionPreset.byTitle(title);
+        }
+
     }
 
     private class SlideshowPresetConverter extends StringConverter<SlideshowPreset> {

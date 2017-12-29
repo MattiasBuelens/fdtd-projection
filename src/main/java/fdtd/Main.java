@@ -13,7 +13,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("ControlPanel.fxml"));
         primaryStage.setTitle("From Dusk Till Dawn - Controlepaneel");
-        primaryStage.setScene(new Scene(root, 400, 200));
+        primaryStage.setScene(new Scene(root));
         primaryStage.setOnCloseRequest(event -> {
             Platform.exit();
         });
