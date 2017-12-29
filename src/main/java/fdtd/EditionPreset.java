@@ -33,8 +33,8 @@ public enum EditionPreset {
     }, new TimedMessage[]{
             new TimedMessageImpl("Now playing: Komics", Duration.ofHours(22).minusDays(1)),
             new TimedMessageImpl("Now playing: Soundcheck", Duration.ofHours(23).plusMinutes(30).minusDays(1)),
-            new TimedMessageImpl("Now playing: Dimitri Wouters", Duration.ofHours(1).plusMinutes(30)),
-            new TimedMessageImpl("Now playing: Coppez", Duration.ofHours(2).plusMinutes(30)),
+            new TimedMessageImpl("Now playing: Dimitri Wouters", Duration.ofHours(1)),
+            new TimedMessageImpl("Now playing: Coppez", Duration.ofHours(2)),
             new TimedMessageImpl("Now playing: Supernovazz", Duration.ofHours(4))
     }),
 
