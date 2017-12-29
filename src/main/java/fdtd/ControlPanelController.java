@@ -7,6 +7,7 @@ import javafx.beans.binding.ListExpression;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -134,8 +135,11 @@ public class ControlPanelController {
             }
         });
 
+        slideshowsProperty().addListener((ListChangeListener<SlideshowPreset>) c -> updateCurrentSlideshow());
+
         slideshowPresetProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != newValue) {
+                updateCurrentSlideshow(oldValue, newValue);
                 updateSlides();
             }
         });
@@ -332,6 +336,30 @@ public class ControlPanelController {
 
     private void onStageFullScreenChanged(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
         setFullScreen(newValue);
+    }
+
+    private void updateCurrentSlideshow() {
+        SlideshowPreset slideshow = getSlideshowPreset();
+        updateCurrentSlideshow(slideshow, slideshow);
+    }
+
+    private void updateCurrentSlideshow(SlideshowPreset oldSlideshow, SlideshowPreset newSlideshow) {
+        EditionPreset edition = getEditionPreset();
+        if (newSlideshow != null && edition.getSlideshows().contains(newSlideshow)) {
+            // Valid new slideshow in current edition
+            return;
+        }
+
+        if (oldSlideshow != null) {
+            // Try to find slideshow with same title
+            newSlideshow = edition.getSlideshowByTitle(oldSlideshow.getTitle());
+        }
+        if (newSlideshow == null && !edition.getSlideshows().isEmpty()) {
+            // Fall back to first slideshow
+            newSlideshow = edition.getSlideshows().get(0);
+        }
+
+        setSlideshowPreset(newSlideshow);
     }
 
     private void updateSlides() {
