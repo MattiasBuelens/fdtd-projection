@@ -4,10 +4,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.binding.BooleanExpression;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ReadOnlyDoubleWrapper;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import javafx.beans.value.ObservableDoubleValue;
 import javafx.beans.value.ObservableIntegerValue;
 import javafx.beans.value.ObservableValue;
@@ -61,7 +58,7 @@ public class MainController {
     private final SlideshowModel slideshowModel = new SlideshowModel();
     private final ObjectProperty<javafx.util.Duration> slideDuration = new SimpleObjectProperty<>(javafx.util.Duration.seconds(5));
 
-    private final ObservableList<TimedMessage> timedMessages = FXCollections.observableArrayList(TimedMessagePreset.MESSAGES);
+    private final ListProperty<TimedMessage> messages = new SimpleListProperty<>();
 
     private final ViewportUnits viewportUnits = new ViewportUnits();
     private final ReadOnlyDoubleWrapper rem = new ReadOnlyDoubleWrapper(16d);
@@ -115,7 +112,7 @@ public class MainController {
         // Initialize message bar
         messageBarController.visibleProperty().bind(barsVisible);
         messageBarController.setCountdownModel(countdownModel);
-        messageBarController.setMessages(timedMessages);
+        messageBarController.messagesProperty().bind(messages);
 
         // Initialize slideshow
         slideshowController.setSlideshowModel(slideshowModel);
@@ -217,6 +214,10 @@ public class MainController {
 
     public final ListProperty<Image> slidesProperty() {
         return slideshowModel.slidesProperty();
+    }
+
+    public final ListProperty<TimedMessage> messagesProperty() {
+        return messages;
     }
 
     public ObjectProperty<javafx.util.Duration> slideDurationProperty() {

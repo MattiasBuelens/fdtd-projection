@@ -3,11 +3,10 @@ package fdtd;
 import fdtd.util.Memoizer;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanExpression;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.binding.ListExpression;
+import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -64,6 +63,10 @@ public class ControlPanelController {
     private final BooleanProperty projectionRunning = new SimpleBooleanProperty(false);
     private final BooleanProperty projectionFullscreen = new SimpleBooleanProperty(true);
 
+    private final ObjectProperty<EditionPreset> editionPreset = new SimpleObjectProperty<>();
+    private final ListProperty<SlideshowPreset> slideshows = new SimpleListProperty<>();
+    private final ListProperty<TimedMessage> messages = new SimpleListProperty<>();
+
     private final ObjectProperty<SlideshowPreset> slideshowPreset = new SimpleObjectProperty<>();
     private final ObjectProperty<Duration> slideDuration = new SimpleObjectProperty<>();
 
@@ -73,8 +76,21 @@ public class ControlPanelController {
     private final ObjectProperty<Screen> projectionScreen = new SimpleObjectProperty<>();
 
     public ControlPanelController() {
+        // Bind properties
+        slideshows.bind(EasyBind
+                .select(editionPresetProperty())
+                .selectObject(EditionPreset::slideshowsProperty)
+                .orElse(FXCollections.emptyObservableList()));
+        messages.bind(EasyBind
+                .select(editionPresetProperty())
+                .selectObject(EditionPreset::messagesProperty)
+                .orElse(FXCollections.emptyObservableList()));
+
+        // Default to first edition preset
+        setEditionPreset(EditionPreset.values()[0]);
+
         // Default to first slideshow preset
-        setSlideshowPreset(SlideshowPreset.values()[0]);
+        setSlideshowPreset(slideshows.get(0));
 
         // Default slide duration
         setSlideDuration(Duration.seconds(5));
@@ -132,7 +148,7 @@ public class ControlPanelController {
 
     public void initialize() {
         choiceSlideshowPreset.setConverter(new SlideshowPresetConverter());
-        choiceSlideshowPreset.getItems().addAll(SlideshowPreset.values());
+        choiceSlideshowPreset.itemsProperty().bind(slideshowsProperty());
         choiceSlideshowPreset.valueProperty().bindBidirectional(slideshowPresetProperty());
 
         choiceMonitor.setConverter(new ScreenConverter());
@@ -155,6 +171,34 @@ public class ControlPanelController {
 
         buttonStart.disableProperty().bind(runningProperty());
         buttonStop.disableProperty().bind(runningProperty().not());
+    }
+
+    public EditionPreset getEditionPreset() {
+        return editionPresetProperty().get();
+    }
+
+    public void setEditionPreset(EditionPreset preset) {
+        editionPresetProperty().set(preset);
+    }
+
+    public ObjectProperty<EditionPreset> editionPresetProperty() {
+        return editionPreset;
+    }
+
+    public ObservableList<SlideshowPreset> getSlideshows() {
+        return slideshowsProperty().get();
+    }
+
+    public ListExpression<SlideshowPreset> slideshowsProperty() {
+        return slideshows;
+    }
+
+    public ObservableList<TimedMessage> getMessages() {
+        return messagesProperty().get();
+    }
+
+    public ListExpression<TimedMessage> messagesProperty() {
+        return messages;
     }
 
     public SlideshowPreset getSlideshowPreset() {
@@ -238,6 +282,7 @@ public class ControlPanelController {
         projectionStage.setOnCloseRequest(event -> destroyProjection());
 
         projectionController = fxmlLoader.getController();
+        projectionController.messagesProperty().bind(messagesProperty());
         projectionController.slideDurationProperty().bind(slideDurationProperty());
         projectionController.newYearProperty().bind(newYear);
         updateSlides();
@@ -315,7 +360,7 @@ public class ControlPanelController {
 
         @Override
         public SlideshowPreset fromString(String title) {
-            return SlideshowPreset.byTitle(title);
+            return getEditionPreset().getSlideshowByTitle(title);
         }
 
     }
