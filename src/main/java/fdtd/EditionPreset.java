@@ -11,6 +11,29 @@ import java.time.Duration;
 
 public enum EditionPreset {
 
+    Y2019("2018-2019", new SlideshowPreset[]{
+            new SlideshowPreset("Bar",
+                    "images/2019/Bar1.png",
+                    "images/2019/Bar2.png"
+            ),
+            new SlideshowPreset("Bonnekes",
+                    "images/2019/Bonnekes1.png",
+                    "images/2019/Bonnekes2.png"
+            ),
+            new SlideshowPreset("Champagne en Cocktails",
+                    "images/2019/Champagne1.png",
+                    "images/2019/Champagne2.png",
+                    "images/2019/Cocktails1.png",
+                    "images/2019/Cocktails2.png"
+            )
+    }, new TimedMessage[]{
+            new TimedMessageImpl("Now playing: Soundcheck", Duration.ofHours(22).minusDays(1)),
+            new TimedMessageImpl("Now playing: Petidis", Duration.ofHours(23).plusMinutes(30).minusDays(1)),
+            new TimedMessageImpl("Now playing: Severe", Duration.ofHours(1)),
+            new TimedMessageImpl("Now playing: Boost", Duration.ofHours(2)),
+            new TimedMessageImpl("Now playing: Supernovazz", Duration.ofHours(4))
+    }),
+
     Y2018("2017-2018", new SlideshowPreset[]{
             new SlideshowPreset("Bar",
                     "images/2018/Bar1.jpg",
